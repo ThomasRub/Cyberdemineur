@@ -23,7 +23,6 @@ L'état de la case peut prendre 3 valeurs:
 
 from random import*
 from tkinter import*
-from timeit import default_timer
 
 ########################################################################################################
 ######################################### CLASSES ######################################################

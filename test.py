@@ -25,6 +25,7 @@ L'état de la case peut prendre 3 valeurs:
 from random import*
 from tkinter import*
 from time import time_ns
+from math import*
 
 ########################################################################################################
 ######################################### CLASSES ######################################################
@@ -415,6 +416,10 @@ def temps_chrono(temps):
     temps_final=(h,m,s,ms)
     return temps_final
 
+def score(chrono,nb_vies):
+    score=(1/sqrt(chrono/10))*exp(2*nb_vies+5)*10**7
+    return score
+
 ########################################################################################################
 ######################################### PROGRAMME PRINCIPAL ##########################################
 ########################################################################################################
@@ -499,4 +504,12 @@ chrono=time_ns()
 window.mainloop()
 
 chrono=(time_ns()-chrono)
+print(chrono)
 print(temps_chrono(chrono))
+
+print(int(score(chrono,3)))
+
+""" 1min
+7 387 578   3 vies
+1 035 427   2 vies
+  138 935   1 vie """
