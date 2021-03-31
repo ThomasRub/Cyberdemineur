@@ -23,7 +23,7 @@ L'état de la case peut prendre 3 valeurs:
 
 from random import*
 from tkinter import*
-from timeit import default_timer
+from time import time_ns
 
 ########################################################################################################
 ######################################### CLASSES ######################################################
@@ -394,6 +394,26 @@ def changer_etat(grille,x,y):
     b[ref].grid_forget()
     print(grille[ligne][colonne])
 
+def temps_chrono(temps):
+    """retourne le temps passé en nano-secondes sous la forme d'un tuple (heures,minutes,secondes,milli-secondes)"""
+    ms=0
+    s=0
+    m=0
+    h=0
+    if temps >= 1000000:
+        ms=int(temps/1000000)
+    if ms >= 1000:
+        s=int(ms/1000)
+        ms=int(ms-(1000*s))
+    if s >= 60:
+        m=int(s/60)
+        s=int(s-(60*m))
+    if m >= 60:
+        h=int(m/60)
+        m=int(m-(60*h))
+    temps_final=(h,m,s,ms)
+    return temps_final
+
 ########################################################################################################
 ######################################### PROGRAMME PRINCIPAL ##########################################
 ########################################################################################################
@@ -436,6 +456,9 @@ window.attributes("-fullscreen",False)
 window.bind("<F11>", lambda event: window.attributes("-fullscreen",not window.attributes("-fullscreen")))
 window.bind("<Escape>", lambda event: window.attributes("-fullscreen", False))
 
+# raccourcis clavier pour fermer la fenêtre, le raccourcis est F4
+window.bind("<F4>",lambda event: window.destroy())
+
 # définition des images dans le code
 case_bombe=PhotoImage(file="case_bombe.png")
 case_cachee=PhotoImage(file="case_cachee.png")
@@ -469,4 +492,10 @@ grille.pack(pady=0)
 gr=Bouton(grille_console,58,62)
 gr.generer_boutons()
 
+chrono=time_ns()
+
+
 window.mainloop()
+
+chrono=(time_ns()-chrono)
+print(temps_chrono(chrono))

@@ -24,7 +24,7 @@ L'état de la case peut prendre 3 valeurs:
 
 from random import*
 from tkinter import*
-from time import *
+from time import time_ns
 
 ########################################################################################################
 ######################################### CLASSES ######################################################
