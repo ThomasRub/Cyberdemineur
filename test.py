@@ -509,7 +509,3 @@ print(temps_chrono(chrono))
 
 print(int(score(chrono,3)))
 
-""" 1min
-7 387 578   3 vies
-1 035 427   2 vies
-  138 935   1 vie """
