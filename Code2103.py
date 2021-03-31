@@ -14,7 +14,7 @@ L'état de la case peut prendre 3 valeurs:
     - 2 : il y a un drapeau sur la case
 """
 
-"""test"""
+"""yooooioioioiuoiyuiyuioyiu"""
 
 from random import*
 from tkinter import*
