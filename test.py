@@ -24,6 +24,7 @@ L'état de la case peut prendre 3 valeurs:
 
 from random import*
 from tkinter import*
+from time import *
 
 ########################################################################################################
 ######################################### CLASSES ######################################################
@@ -394,6 +395,26 @@ def changer_etat(grille,x,y):
     b[ref].grid_forget()
     print(grille[ligne][colonne])
 
+def temps_chrono(temps):
+    """retourne le temps passé en nano-secondes sous la forme d'un tuple (heures,minutes,secondes,milli-secondes)"""
+    ms=0
+    s=0
+    m=0
+    h=0
+    if temps >= 1000000:
+        ms=int(temps/1000000)
+    if ms >= 1000:
+        s=int(ms/1000)
+        ms=int(ms-(1000*s))
+    if s >= 60:
+        m=int(s/60)
+        s=int(s-(60*m))
+    if m >= 60:
+        h=int(m/60)
+        m=int(m-(60*h))
+    temps_final=(h,m,s,ms)
+    return temps_final
+
 ########################################################################################################
 ######################################### PROGRAMME PRINCIPAL ##########################################
 ########################################################################################################
@@ -472,5 +493,10 @@ grille.pack(pady=0)
 gr=Bouton(grille_console,58,62)
 gr.generer_boutons()
 
+chrono=time_ns()
+
 
 window.mainloop()
+
+chrono=(time_ns()-chrono)
+print(temps_chrono(chrono))
