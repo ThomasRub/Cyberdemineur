@@ -24,7 +24,6 @@ L'état de la case peut prendre 3 valeurs:
 
 from random import*
 from tkinter import*
-from timeit import default_timer
 
 ########################################################################################################
 ######################################### CLASSES ######################################################
@@ -132,29 +131,6 @@ class Bouton:
         else:
             self.grille[ligne][colonne][1]=0
             b[ref]['image']=case_cachee
-
-class Chrono:
-    def __init__(self):
-        self.text=StringVar()
-        self.text.set("00:00:00")
-        self.label = Label(window, textvariable=self.text)
-        self.label.pack()
-        self.start_chrono=default_timer()
-
-    def updateTime(self):
-        now = default_timer() - self.start_chrono
-        s=0
-        m=0
-        h=0
-        str_time = "%d:%02d:%02d" % (h, m, s)
-        s+=1
-        if s==60:
-            m+=1
-            s=0
-        if m==60:
-            h+=1
-            m=0
-        #window.after(1000, self.updateTime())
 
 ########################################################################################################
 ######################################### FONCTIONS ####################################################
@@ -460,6 +436,9 @@ window.attributes("-fullscreen",False)
 window.bind("<F11>", lambda event: window.attributes("-fullscreen",not window.attributes("-fullscreen")))
 window.bind("<Escape>", lambda event: window.attributes("-fullscreen", False))
 
+# raccourcis clavier pour fermer la fenêtre, le raccourcis est F4
+window.bind("<F4>",lambda event: window.destroy())
+
 # définition des images dans le code
 case_bombe=PhotoImage(file="case_bombe.png")
 case_cachee=PhotoImage(file="case_cachee.png")
@@ -493,9 +472,5 @@ grille.pack(pady=0)
 gr=Bouton(grille_console,58,62)
 gr.generer_boutons()
 
-# création du chrono
-chrono=Chrono()
-chrono.updateTime()
-print(chrono.text)
 
 window.mainloop()
