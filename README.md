@@ -5,6 +5,7 @@ Ce projet a été créé dans le cadre d'un cours de NSI au lycée Louis Modeste
 Si vous voulez télécharger le jeu:
 - vérifiez que vous êtes bien dans la branche "main"
 - appuyez sur le bouton "Code" et cliquez sur "Donload ZIP"
+- lancez le fichier "Cyberdemineur.exe"
   
 Si vous voulez télécharger le code:  
 - appuyez sur le bouton en haut à gauche et choisissez la branche "dev"
