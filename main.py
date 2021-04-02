@@ -564,4 +564,4 @@ window.mainloop()
 chrono=(time_ns()-chrono)
 
 print(temps_chrono(chrono))
-print(int(score(chrono,3)))
+print(int(score(chrono,3)))     # le plus gros score possible est à 8 chiffres
