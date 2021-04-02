@@ -462,11 +462,10 @@ def fin_du_jeu(etat):
         window.destroy()
 
 def temps_chrono(temps):
-    """retourne le temps passé en nano-secondes sous la forme d'un tuple (heures,minutes,secondes,milli-secondes)"""
+    """retourne le temps passé en nano-secondes sous la forme d'un tuple (minutes,secondes,milli-secondes)"""
     ms=0
     s=0
     m=0
-    h=0
     if temps >= 1000000:
         ms=int(temps/1000000)
     if ms >= 1000:
@@ -475,15 +474,24 @@ def temps_chrono(temps):
     if s >= 60:
         m=int(s/60)
         s=int(s-(60*m))
-    if m >= 60:
-        h=int(m/60)
-        m=int(m-(60*h))
-    temps_final=(h,m,s,ms)
+    temps_final=(m,s,ms)
     return temps_final
 
 def score(chrono,nb_vies):
-    score=(1/sqrt(chrono/10))*exp(2*nb_vies+5)*10**7
+    """cette fonction génère un score en fonction du temps et du nomber de vies perdus"""
+    score=(1/sqrt(chrono/10))*exp(2*nb_vies+5)*10**5
     return score
+
+def musique(son):
+    """cette fonction change de musique quand on appuie sur F12
+    utilisée pour le développement"""
+    window.bind("<F12>",lambda event:musique(son))
+    if son==0:
+        PlaySound("loop_menu_cyberdemineur.wav",SND_ASYNC|SND_LOOP)
+        son=1
+    elif son==1:
+        PlaySound("mainloop_cyberdemineur.wav",SND_ASYNC|SND_LOOP)
+        son=0
 
 ########################################################################################################
 ######################################### PROGRAMME PRINCIPAL ##########################################
@@ -545,7 +553,7 @@ case8=PhotoImage(file="case8.png")
 fond4=PhotoImage(file="fond4.png")
 logo=PhotoImage(file="logo_cyberdemineur.png")
 
-# définition de l'image de fond
+# définition de l'image de fond et configuration de la fenêtre
 image_fond_label=Label(window, image=fond4)
 image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
 
@@ -553,15 +561,20 @@ window.configure(bg="black")
 window.iconphoto(False,logo)
 window.title("Cyber démineur")
 
-
+# début du chrono et de la partie
 debut_de_partie()
 chrono=time_ns()
+
+# lecture des musiques
+son_joue=0
+musique(son_joue)
 
 
 window.mainloop()
 
-
+# fin du chrono, affichage du temps et du score dans la console
+# (temporaire)
 chrono=(time_ns()-chrono)
 
 print(temps_chrono(chrono))
-print(int(score(chrono,3)))     # le plus gros score possible est à 8 chiffres
+print(int(score(chrono,3)))
