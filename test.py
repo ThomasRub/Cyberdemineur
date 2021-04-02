@@ -26,7 +26,7 @@ from random import*
 from tkinter import*
 from time import time_ns
 from math import sqrt,exp
-from winsound import*
+from winsound import PlaySound,SND_ASYNC,SND_LOOP
 
 ########################################################################################################
 ######################################### CLASSES ######################################################

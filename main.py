@@ -24,7 +24,8 @@ L'état de la case peut prendre 3 valeurs:
 from random import*
 from tkinter import*
 from time import time_ns
-from math import*
+from math import sqrt,exp
+from winsound import PlaySound,SND_ASYNC,SND_LOOP
 
 ########################################################################################################
 ######################################### CLASSES ######################################################
