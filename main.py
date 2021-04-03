@@ -14,16 +14,9 @@ L'état de la case peut prendre 3 valeurs:
     - 2 : il y a un drapeau sur la case
 """
 
-""" Notes pour plus tard:
-    Modules:
-        - audioloop
-        - wave 
-    Sites:
-        - https://askcodez.com/la-grille-a-linterieur-dun-cadre.html"""
-
-from random import*
+from random import randint
 from tkinter import*
-from time import time_ns
+from time import time_ns,sleep
 from math import sqrt,exp
 from winsound import PlaySound,SND_ASYNC,SND_LOOP
 

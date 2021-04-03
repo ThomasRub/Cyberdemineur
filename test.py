@@ -14,17 +14,9 @@ L'état de la case peut prendre 3 valeurs:
     - 2 : il y a un drapeau sur la case
 """
 
-""" Notes pour plus tard:
-    Modules:
-        - audioloop
-        - wave 
-    Sites:
-        - https://askcodez.com/la-grille-a-linterieur-dun-cadre.html
-        - https://www.delftstack.com/fr/howto/python-tkinter/how-to-change-the-tkinter-label-text/"""
-
-from random import*
+from random import randint
 from tkinter import*
-from time import time_ns
+from time import time_ns,sleep
 from math import sqrt,exp
 from winsound import PlaySound,SND_ASYNC,SND_LOOP
 
@@ -52,10 +44,10 @@ class Bouton:
                 b.append(Button(grille,width=self.taille_case,height=self.taille_case,image=case_cachee,relief='flat'))
                 b[a].grid(column=i,row=j)
                 b[a].bind("<Button-3>",lambda i,ref=a: self.afficheFlag(ref))
-                b[a].bind("<Button-1>",lambda i,ref=a: self.click(ref))
+                b[a].bind("<Button-1>",lambda i,ref=a: self.click(ref,premier_clic))
                 a+=1
 
-    def click(self,ref):
+    def click(self,ref,premier_clic):
         """Méthode qui dévoile la case si le bouton est cliqué (via le clic gauche). Elle efface le bouton, 
         et modifie la case de la grille sous le bouton pour que la bonne valeur soit affichée. 
         Elle prends aussi en charge de dévoiler les cases adjacentes à une case vide (diagonale non prise en charge)"""
@@ -63,8 +55,18 @@ class Bouton:
         colonne=(info["column"])
         ligne=(info["row"])
 
+        #if premier_clic==False and self.grille[ligne][colonne][0] >=9:
+        #    self.image_label=case_bombe
+        #    b[ref].grid_remove()
+        #    b[ref].grid_remove()
+        #    print(premier_clic,"debut")
+        #    premier_clic=True
+        #    print(premier_clic,"df")
+        #    return premier_clic
+
         # Changement de la case 0. Cette partie gère également la découverte auto des cases adjacentes
-        if self.grille[ligne][colonne][0] == 0 and (not self.grille[ligne][colonne][1] == 2 or self.grille[ligne][colonne][1] == 1):
+        if self.grille[ligne][colonne][0] == 0 and self.grille[ligne][colonne][1] == 0:
+            premier_clic=True
             labels[ref]['image']=case_vide
             b[ref].grid_remove()
             gau=ref-l
@@ -74,52 +76,66 @@ class Bouton:
 
             try :
                 if gau>=0 :
-                    self.click(gau)
+                    self.click(gau,premier_clic)
             except KeyError : pass
             try :
                 if droi<=nbmax:
-                    self.click(droi)
+                    self.click(droi,premier_clic)
             except KeyError : pass
             try:
                 if haut not in casehaut:
-                    self.click(haut-1)
+                    self.click(haut-1,premier_clic)
             except KeyError : pass
             try:
                 if bas not in casebas:
-                    self.click(bas+1)
+                    self.click(bas+1,premier_clic)
             except KeyError : pass
             self.image_label=case_vide
 
         # Changements des cases 1 à 8 + bombes lorsque cliqué (beaucoup de cas à gérer )
-        elif self.grille[ligne][colonne][0] == 1 and (not self.grille[ligne][colonne][1] == 2 or self.grille[ligne][colonne][1] == 1):
+        elif self.grille[ligne][colonne][0] == 1 and self.grille[ligne][colonne][1] == 0:
             self.image_label=case1
+            labels[ref]['image']=self.image_label
             b[ref].grid_remove()
-        elif self.grille[ligne][colonne][0] == 2 and (not self.grille[ligne][colonne][1] == 2 or self.grille[ligne][colonne][1] == 1):
+        elif self.grille[ligne][colonne][0] == 2 and self.grille[ligne][colonne][1] == 0:
             self.image_label=case2
+            labels[ref]['image']=self.image_label
             b[ref].grid_remove()
-        elif self.grille[ligne][colonne][0] == 3 and (not self.grille[ligne][colonne][1] == 2 or self.grille[ligne][colonne][1] == 1):
+        elif self.grille[ligne][colonne][0] == 3 and self.grille[ligne][colonne][1] == 0:
             self.image_label=case3
+            labels[ref]['image']=self.image_label
             b[ref].grid_remove()
-        elif self.grille[ligne][colonne][0] == 4 and (not self.grille[ligne][colonne][1] == 2 or self.grille[ligne][colonne][1] == 1):
+        elif self.grille[ligne][colonne][0] == 4 and self.grille[ligne][colonne][1] == 0:
             self.image_label=case4
+            labels[ref]['image']=self.image_label
             b[ref].grid_remove()
-        elif self.grille[ligne][colonne][0] == 5 and (not self.grille[ligne][colonne][1] == 2 or self.grille[ligne][colonne][1] == 1):
+        elif self.grille[ligne][colonne][0] == 5 and self.grille[ligne][colonne][1] == 0:
             self.image_label=case5
+            labels[ref]['image']=self.image_label
             b[ref].grid_remove()
-        elif self.grille[ligne][colonne][0] == 6 and (not self.grille[ligne][colonne][1] == 2 or self.grille[ligne][colonne][1] == 1):
+        elif self.grille[ligne][colonne][0] == 6 and self.grille[ligne][colonne][1] == 0:
             self.image_label=case6
+            labels[ref]['image']=self.image_label
             b[ref].grid_remove()
-        elif self.grille[ligne][colonne][0] == 7 and (not self.grille[ligne][colonne][1] == 2 or self.grille[ligne][colonne][1] == 1):
+        elif self.grille[ligne][colonne][0] == 7 and self.grille[ligne][colonne][1] == 0:
             self.image_label=case7
+            labels[ref]['image']=self.image_label
             b[ref].grid_remove()
-        elif self.grille[ligne][colonne][0] == 8 and (not self.grille[ligne][colonne][1] == 2 or self.grille[ligne][colonne][1] == 1):
+        elif self.grille[ligne][colonne][0] == 8 and self.grille[ligne][colonne][1] == 0:
             self.image_label=case8
+            labels[ref]['image']=self.image_label
             b[ref].grid_remove()
-        elif self.grille[ligne][colonne][0]>=9 and (not self.grille[ligne][colonne][1] == 2 or self.grille[ligne][colonne][1] == 1):
+        elif self.grille[ligne][colonne][0]>=9 and self.grille[ligne][colonne][1] == 0:
             self.image_label=case_bombe
+            labels[ref]['image']=self.image_label
+            global bombes_trouvees
+            bombes_trouvees+=1
+            global vie
+            vie-=1
             b[ref].grid_remove()
             b[ref].grid_remove()
-        labels[ref]['image']=self.image_label
+        premier_clic=True
+        verif_fin(vie,bombes_trouvees)
 
     def afficheFlag(self,ref):
         """Méthode qui modifie l'image du bouton pour afficher un drapeau. Le joueur ne peut ainsi plus dévoiler 
@@ -131,9 +147,17 @@ class Bouton:
         if not self.grille[ligne][colonne][1]==2:
             self.grille[ligne][colonne][1]=2
             b[ref]['image']=case_drapeau
+            if self.grille[ligne][colonne][0]>=9:
+                global bombes_trouvees
+                bombes_trouvees+=1
+                verif_fin(vie,bombes_trouvees)
         else:
             self.grille[ligne][colonne][1]=0
             b[ref]['image']=case_cachee
+            if self.grille[ligne][colonne][0]>=9:
+                bombes_trouvees-=1
+                return bombes_trouvees
+
 
 ########################################################################################################
 ######################################### FONCTIONS ####################################################
@@ -397,6 +421,47 @@ def changer_etat(grille,x,y):
     b[ref].grid_forget()
     print(grille[ligne][colonne])
 
+def debut_de_partie():
+
+    grille_console=grille_vide(c,l)
+    generer_bombes(grille_console,bombes,c,l)
+    affiche_grille_console(grille_console,c)
+
+    global labels
+    labels=[]
+    global b
+    b = []
+    global grille
+    grille=Frame(window)
+    grille.pack(pady=int(resolution[-3])+50)
+
+    gr=Bouton(grille_console,58,62)
+    gr.generer_boutons()
+
+def verif_fin(vie,bombes_trouvees):
+    if vie==0:
+        etat='defaite'
+        fin_du_jeu(etat)
+    if bombes_trouvees==bombes:
+        etat='victoire'
+        fin_du_jeu(etat)
+    
+def fin_du_jeu(etat):
+    if etat=='defaite':
+        print("Perdu")
+        ecran_fin=Label(window,image=ecran_defaite)
+        ecran_fin.place(x=0,y=0,relwidth=1,relheight=1)
+        ecran_fin.transient ( parent=None )
+        sleep(5)
+        window.destroy()
+    else:
+        print('Bravo')
+        ecran_fin=Label(window,image=ecran_victoire)
+        ecran_fin.place(x=0,y=0,relwidth=1,relheight=1)
+        ecran_fin.transient ( parent=None )
+        sleep(5)
+        window.destroy()
+
 def temps_chrono(temps):
     """retourne le temps passé en nano-secondes sous la forme d'un tuple (minutes,secondes,milli-secondes)"""
     ms=0
@@ -434,27 +499,17 @@ def musique(son):
 ########################################################################################################
 
 
-# génération de la grille, placement des bombes et des chiffres
+# définition des variables principales
 c=9             # nombre de colones
 l=9             # nombre de lignes
 bombes=10       # nombre de bombes
+vie=3
+premier_clic=False
 
-nbmax=(c*c)-1   # indice de la dernière cases, tout en bas à droite (dans un cadre de 9x9, cette case sera 80)
-casehaut=[]
-casebas=[]
-casehaut.append(0)
-for i in range(l):
-    casehaut.append((i+1)*c)
-    casebas.append(((i+1)*c)-1)
-casebas.append(c*l)
-
-grille_console=grille_vide(c,l)
-generer_bombes(grille_console,bombes,c,l)
-affiche_grille_console(grille_console,c)
-
-# création de la fenêtre et adaptation de l'écran
+# création de la fenêtre
 window=Tk()
 
+#  adaptation de l'écran
 division_resolution=1
 resolution=str(int(window.winfo_screenwidth()/division_resolution)), "x", str(int(window.winfo_screenheight()/division_resolution))
 resolution=str(resolution)
@@ -488,26 +543,32 @@ case6=PhotoImage(file="case6.png")
 case7=PhotoImage(file="case7.png")
 case8=PhotoImage(file="case8.png")
 fond4=PhotoImage(file="fond4.png")
+ecran_victoire=PhotoImage(file="ecran_victoire.png")
+ecran_defaite=PhotoImage(file="ecran_defaite.png")
 logo=PhotoImage(file="logo_cyberdemineur.png")
 
-# définition de l'image de fond et configuration de la fenêtre
-image_fond_label=Label(window, image=fond4)
-image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
-
+# configuration de la fenêtre
 window.configure(bg="black")
 window.iconphoto(False,logo)
 window.title("Cyber démineur")
 
-# création des boutons dans les frames
-labels=[]
-b = []
-grille=Frame(window)
-grille.pack(pady=0)
+# création de la grille
+nbmax=(c*c)-1   # indice de la dernière cases, tout en bas à droite (dans un cadre de 9x9, cette case sera 80)
+casehaut=[]
+casebas=[]
+casehaut.append(0)
+for i in range(l):
+    casehaut.append((i+1)*c)
+    casebas.append(((i+1)*c)-1)
+casebas.append(c*l)
+bombes_trouvees=0
 
-gr=Bouton(grille_console,58,62)
-gr.generer_boutons()
+# définition de l'image de fond
+image_fond_label=Label(window, image=fond4)
+image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
 
-# début du chrono
+# début du chrono et de la partie
+debut_de_partie()
 chrono=time_ns()
 
 # lecture des musiques
@@ -520,8 +581,8 @@ window.mainloop()
 # fin du chrono, affichage du temps et du score dans la console
 # (temporaire)
 chrono=(time_ns()-chrono)
-print(chrono)
-print(temps_chrono(chrono))
 
+print(temps_chrono(chrono))
 print(int(score(chrono,3)))
 
+""" http://tkinter.fdex.eu/doc/uwm.html """
