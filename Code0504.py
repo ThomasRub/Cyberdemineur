@@ -15,16 +15,13 @@ L'état de la case peut prendre 3 valeurs:
 """
 
 """ Notes pour plus tard:
-    Modules:
-        - audioloop
-        - wave
-    Sites:
-        - https://askcodez.com/la-grille-a-linterieur-dun-cadre.html"""
+        - http://tkinter.fdex.eu/doc/uwm.html """
 
-from random import*
+from random import randint
 from tkinter import*
-from time import *
-from math import*
+from time import time_ns,sleep
+from math import sqrt,exp
+from winsound import PlaySound,SND_ASYNC,SND_LOOP
 
 ########################################################################################################
 ######################################### CLASSES ######################################################
@@ -96,7 +93,7 @@ class Grille:
             affiche_grille_console(self.grille)
         if self.premier_clic==False:
             global chrono
-            chrono=time()
+            chrono=time_ns()
         self.premier_clic=True
 
 
@@ -215,15 +212,23 @@ def verif_fin(vie,bombes_trouvees):
 def fin_du_jeu(etat):
     if etat=='defaite':
         suppr_tout()
-        fin=Canvas(window,width=1550,height=700)
-        #fin.create_image(x=0,y=0,image=dommage)
+        print("Perdu")
+        ecran_fin=Label(window,image=ecran_defaite)
+        ecran_fin.place(x=0,y=0,relwidth=1,relheight=1)
+        #ecran_fin.transient ( parent=None )        # met ecran_fin au premier plan (fonctionne mais renvoi une erreur)
+        sleep(5)
+        window.destroy()
     else:
         print('Bravo')
         suppr_tout()
-        fin=Label(window,image=victoire)
+        ecran_fin=Label(window,image=ecran_victoire)
+        ecran_fin.place(x=0,y=0,relwidth=1,relheight=1)
+        #ecran_fin.transient ( parent=None )        # met ecran_fin au premier plan (fonctionne mais renvoi une erreur)
+        sleep(5)
+        window.destroy()
 
 def temps_chrono(temps):
-    """retourne le temps passé en nano-secondes sous la forme d'un tuple (heures,minutes,secondes,milli-secondes)"""
+    """retourne le temps passé en nano-secondes sous la forme d'un tuple (minutes,secondes,milli-secondes)"""
     ms=0
     s=0
     m=0
@@ -239,12 +244,25 @@ def temps_chrono(temps):
     if m >= 60:
         h=int(m/60)
         m=int(m-(60*h))
-    temps_final=(h,m,s,ms)
+    temps_final=(m,s,ms)
     return temps_final
 
 def score(chrono,nb_vies):
-    score=(1/sqrt(chrono/10))*exp(2*nb_vies+5)*10**2
+    """cette fonction génère un score en fonction du temps et du nomber de vies perdus"""
+    score=(1/sqrt(chrono/10))*exp(2*nb_vies+5)*10**5
     return score
+
+def musique(son):
+    """cette fonction change de musique quand on appuie sur F12
+    utilisée pour le développement"""
+    window.bind("<F12>",lambda event:musique(son))
+    if son==0:
+        PlaySound("loop_menu_cyberdemineur.wav",SND_ASYNC|SND_LOOP)
+        son=1
+    elif son==1:
+        PlaySound("mainloop_cyberdemineur.wav",SND_ASYNC|SND_LOOP)
+        son=0
+
 
 def suppr_tout():
     grille.destroy()
@@ -286,7 +304,7 @@ resolution=resolution.replace(")","")
 window.geometry(resolution)
 
 # gestion du plein écran, F11 pour être en plein écran, Echap pour en sortir
-window.attributes("-fullscreen",True)
+window.attributes("-fullscreen",False)
 window.bind("<F11>", lambda event: window.attributes("-fullscreen",not window.attributes("-fullscreen")))
 window.bind("<Escape>", lambda event: window.attributes("-fullscreen", False))
 
@@ -307,8 +325,8 @@ case6=PhotoImage(file="case6.png")
 case7=PhotoImage(file="case7.png")
 case8=PhotoImage(file="case8.png")
 fond4=PhotoImage(file="fond4.png")
-victoire=PhotoImage(file="ecran_victoire.png")
-dommage=PhotoImage(file="ecran_defaite.png")
+ecran_victoire=PhotoImage(file="ecran_victoire.png")
+ecran_defaite=PhotoImage(file="ecran_defaite.png")
 logo=PhotoImage(file="logo_cyberdemineur.png")
 
 # définition de l'image de fond
@@ -319,12 +337,19 @@ window.configure(bg="black")
 window.iconphoto(False,logo)
 window.title("Cyber démineur")
 
-
+# début du chrono et de la partie
 debut_de_partie()
+chrono=time_ns()
+
+# lecture des musiques
+son_joue=0
+musique(son_joue)
 
 window.mainloop()
 
-chrono=(time()-chrono)
+# fin du chrono, affichage du temps et du score dans la console
+# (temporaire)
+chrono=(time_ns()-chrono)
 
 print(temps_chrono(chrono))
 print(int(score(chrono,3)))
