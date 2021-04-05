@@ -29,9 +29,6 @@ from math import*
 ########################################################################################################
 ######################################### CLASSES ######################################################
 ########################################################################################################
-class Bouton(Button):
-    def set_grille(self,grille):
-        self.grille=grille
 class Grille:
     def __init__(self,grille,taille_case,taille_label):
         self.grille=grille
@@ -40,6 +37,7 @@ class Grille:
         self.taille_case=taille_case
         self.grille_button=[[0 for i in range(c)]for i in range (l)]
         self.grille_label=[[0 for i in range(c)]for i in range (l)]
+        self.premier_clic=False
 
     def generer_boutons(self):
         """Méthode qui génère les boutons. Elle génère également la "grille de fond" qui affiche les valeurs des cases au joueur.
@@ -48,150 +46,97 @@ class Grille:
             for j in range(len(self.grille[i])):
                 self.grille_label[i][j] = Label(grille,bd=1,justify=CENTER,relief="flat",image=self.image_label,width=self.taille_label,height=self.taille_label)
                 self.grille_label[i][j].grid(column=j,row=i)
-                self.grille_button[i][j] = Bouton(grille,width=self.taille_case,height=self.taille_case,image=case_cachee,relief='flat')
-                self.grille_button[i][j].set_grille(self)
+                self.grille_button[i][j] = Button(grille,width=self.taille_case,height=self.taille_case,image=case_cachee,relief='flat')
                 self.grille_button[i][j].grid(column=j,row=i)
-                self.grille_button[i][j].bind("<Button-3>",lambda i,x=j,y=i: self.afficheFlag(x,y))
-                self.grille_button[i][j].bind("<Button-1>",lambda i,x=j,y=i: self.click(x,y))
-        for i in (self.grille):
-            to_send = ""
-            for j in i :
-                to_send += "# "
-            print(to_send)
-        print('bdbfhbhbfrhvbhbv')
-        for i in (self.grille_button):
-            to_send = ""
-            for j in i :
-                to_send += "# "
-            print(to_send)
-        print('hbfgvhgevcftv')
-        for i in (self.grille_label):
-            to_send = ""
-            for j in i :
-                to_send += "# "
-            print(to_send)
+                self.grille_button[i][j].bind("<Button-3>",lambda i,x=i,y=j: self.afficheFlag(x,y))
+                self.grille_button[i][j].bind("<Button-1>",lambda i,x=i,y=j: self.click(x,y))
 
+    def affiche_valeurs(self,ligne,colonne):
+        if self.grille[ligne][colonne][1]==0:
 
-
-        """
-        for i in self.grille :
-            for j in i :
-                j.append(Label(grille,bd=1,justify=CENTER,relief="flat",image=self.image_label,width=self.taille_label,height=self.taille_label))
-                j[-1].grid(column=j,row=i)
-                j.append(Bouton(grille,width=self.taille_case,height=self.taille_case,image=case_cachee,relief='flat'))
-                j[-1].set_grille(self)
-                j[-1].grid(column=j,row=i)
-                j[-1].bind("<Button-3>",lambda i,x,y: self.afficheFlag(x,y))
-                j[-1].bind("<Button-1>",lambda i,x,y: self.click(x,y))"""
-    """
-    def generer_boutons(self):
-        """"""Méthode qui génère les boutons. Elle génère également la "grille de fond" qui affiche les valeurs des cases au joueur.
-        Les boutons ont deux actions : clic gauche, qui dévoile la case; et clic droit, qui pose un drapeau.""""""
-        a=0
-
-        for i in range(l):
-            for j in range(c):
-
-
-                b.append(Button(grille,width=self.taille_case,height=self.taille_case,image=case_cachee,relief='flat'))
-                b[a].grid(column=j,row=i)
-                b[a].bind("<Button-3>",lambda i,ref=a: self.afficheFlag(ref))
-                b[a].bind("<Button-1>",lambda i,ref=a: self.click(ref,premier_clic))
-                a+=1
-    """
-    def affiche_valeurs(self,colonne,ligne):
-
-        if self.grille[ligne][colonne][0] == 0 and self.grille[ligne][colonne][1] == 0:
-            self.image_label=case_vide
-        elif self.grille[ligne][colonne][0] == 1 and self.grille[ligne][colonne][1] == 0:
-            self.image_label=case1
-        elif self.grille[ligne][colonne][0] == 2 and self.grille[ligne][colonne][1] == 0:
-            self.image_label=case2
-        elif self.grille[ligne][colonne][0] == 3 and self.grille[ligne][colonne][1] == 0:
-            self.image_label=case3
-        elif self.grille[ligne][colonne][0] == 4 and self.grille[ligne][colonne][1] == 0:
-            self.image_label=case4
-        elif self.grille[ligne][colonne][0] == 5 and self.grille[ligne][colonne][1] == 0:
-            self.image_label=case5
-        elif self.grille[ligne][colonne][0] == 6 and self.grille[ligne][colonne][1] == 0:
-            self.image_label=case6
-        elif self.grille[ligne][colonne][0] == 7 and self.grille[ligne][colonne][1] == 0:
-            self.image_label=case7
-        elif self.grille[ligne][colonne][0] == 8 and self.grille[ligne][colonne][1] == 0:
-            self.image_label=case8
-        elif self.grille[ligne][colonne][0]==9 and self.grille[ligne][colonne][1] == 0:
-            self.image_label=case_bombe
-            global bombes_trouvees
-            bombes_trouvees+=1
-            global vie
-            vie-=1
-        self.grille_label[ligne][colonne]['image']=self.image_label
-        self.grille_button[ligne][colonne].grid_remove()
-
+            if self.grille[ligne][colonne][0] == 0 :
+                self.image_label=case_vide
+            elif self.grille[ligne][colonne][0] == 1 :
+                self.image_label=case1
+            elif self.grille[ligne][colonne][0] == 2 :
+                self.image_label=case2
+            elif self.grille[ligne][colonne][0] == 3 :
+                self.image_label=case3
+            elif self.grille[ligne][colonne][0] == 4 :
+                self.image_label=case4
+            elif self.grille[ligne][colonne][0] == 5 :
+                self.image_label=case5
+            elif self.grille[ligne][colonne][0] == 6 :
+                self.image_label=case6
+            elif self.grille[ligne][colonne][0] == 7 :
+                self.image_label=case7
+            elif self.grille[ligne][colonne][0] == 8 :
+                self.image_label=case8
+            elif self.grille[ligne][colonne][0]==9 :
+                self.image_label=case_bombe
+                global vie
+                vie-=1
+                global bombes_trouvees
+                verif_fin(vie,bombes_trouvees)
+                bombes_trouvees+=1
+            self.grille_label[ligne][colonne]['image']=self.image_label
+            self.grille_button[ligne][colonne].grid_remove()
+            self.grille[ligne][colonne][1]=1
+            verif_fin(vie,bombes_trouvees)
 
     def click(self,ligne,colonne):
         """Méthode qui dévoile la case si le bouton est cliqué (via le clic gauche). Elle efface le bouton,
         et modifie la case de la grille sous le bouton pour que la bonne valeur soit affichée.
         Elle prends aussi en charge de dévoiler les cases adjacentes à une case vide (diagonale non prise en charge)"""
+        
 
-        # Changement de la case 0. Cette partie gère également la découverte auto des cases adjacentes
+        while self.premier_clic==False and self.grille[ligne][colonne][0] == 9:
+            self.grille=generer_grille(l,c,bombes)
+            print('---------------------------')
+            affiche_grille_console(self.grille)
+        if self.premier_clic==False:
+            global chrono
+            chrono=time()
+        self.premier_clic=True
+
+
         if self.grille[ligne][colonne][0] == 0 and self.grille[ligne][colonne][1] == 0:
             self.affiche_valeurs(ligne,colonne)
-            """
-            global id
-            id = []
-            recherche_id_vide(colonne,ligne)
-            print(id)
-            for a in id:
-                try:
-                    self.affiche_valeurs(a)
-                except KeyError:
-                    pass
-            """
+            if ligne !=0 :
+                self.click(ligne-1,colonne)
+            if ligne !=l-1 :
+                self.click(ligne+1,colonne)
+            if colonne !=0 :
+                self.click(ligne,colonne-1)
+            if colonne !=c-1 :
+                self.click(ligne,colonne+1)
+
         else:
             self.affiche_valeurs(ligne,colonne)
-
+        
         verif_fin(vie,bombes_trouvees)
 
-    def afficheFlag(self,ref):
+    def afficheFlag(self,ligne,colonne):
         """Méthode qui modifie l'image du bouton pour afficher un drapeau. Le joueur ne peut ainsi plus dévoiler
         la case, à moins d'enlever le drapeau.
         Ajouter/Enlever un drapeau se fait par clic droit"""
-        info = b[ref].grid_info()
-        colonne=(info["column"])
-        ligne=(info["row"])
         if not self.grille[ligne][colonne][1]==2:
             self.grille[ligne][colonne][1]=2
-            b[ref]['image']=case_drapeau
-            if self.grille[ligne][colonne][0]>=9:
+            self.grille_button[ligne][colonne]['image']=case_drapeau
+            if self.grille[ligne][colonne][0]==9:
                 global bombes_trouvees
                 bombes_trouvees+=1
                 verif_fin(vie,bombes_trouvees)
-        else:
+        elif self.grille[ligne][colonne][1]==2:
             self.grille[ligne][colonne][1]=0
-            b[ref]['image']=case_cachee
-            if self.grille[ligne][colonne][0]>=9:
+            self.grille_button[ligne][colonne]['image']=case_cachee
+            if self.grille[ligne][colonne][0]==9:
                 bombes_trouvees-=1
                 return bombes_trouvees
-
 
 ########################################################################################################
 ######################################### FONCTIONS ####################################################
 ########################################################################################################
-
-def recherche_id_vide(x,y):
-    if len(grille_console[0])*x+y not in id :
-        id.append(len(grille_console[0])*x+y)
-        print(x,y)
-        if grille_console[y][x][0]==0:
-            if x != 0:
-                recherche_id_vide(x-1,y)
-            if x != len(grille_console[0])-1:
-                recherche_id_vide(x+1,y)
-            if y != 0 :
-                recherche_id_vide(x,y-1)
-            if y != len(grille_console)-1:
-                recherche_id_vide(x,y+1)
 
 def affiche_grille_console(grille):
     """Permet d'afficher la grille dans la console
@@ -245,16 +190,6 @@ def generer_grille(x,y,nb_bombes):
         grille[i] = grille[i][1:-1]
 
     return grille
-
-def changer_etat(grille,x,y):
-    """Pour le moment, la fonction print le numéro de la case (si c'est un 1,2,3,4,9...) suivi de ses coordonnées
-    Utilisée pour le développement"""
-    info = b[ref].grid_info()
-    colonne=(info["column"])
-    ligne=(info["row"])
-    print(colonne)
-    b[ref].grid_forget()
-    print(grille[ligne][colonne])
 
 def debut_de_partie():
     global grille_console
@@ -320,10 +255,10 @@ def suppr_tout():
 
 
 # génération de la grille, placement des bombes et des chiffres
-l=8         # nombre de lignes
-c=8             # nombre de colones
-bombes=8       # nombre de bombes
-vie=2222
+l=9         # nombre de lignes
+c=9             # nombre de colones
+bombes=10       # nombre de bombes
+vie=3
 premier_clic=False
 
 nbmax=(l*c)-1   # indice de la dernière cases, tout en bas à droite (dans un cadre de 9x9, cette case sera 80)
@@ -351,7 +286,7 @@ resolution=resolution.replace(")","")
 window.geometry(resolution)
 
 # gestion du plein écran, F11 pour être en plein écran, Echap pour en sortir
-window.attributes("-fullscreen",False)
+window.attributes("-fullscreen",True)
 window.bind("<F11>", lambda event: window.attributes("-fullscreen",not window.attributes("-fullscreen")))
 window.bind("<Escape>", lambda event: window.attributes("-fullscreen", False))
 
@@ -363,7 +298,7 @@ case_bombe=PhotoImage(file="case_bombe.png")
 case_cachee=PhotoImage(file="case_cachee.png")
 case_drapeau=PhotoImage(file="case_drapeau.png")
 case_vide=PhotoImage(file="case_vide.png")
-case1=PhotoImage(file=r"case1.png")
+case1=PhotoImage(file="case1.png")
 case2=PhotoImage(file="case2.png")
 case3=PhotoImage(file="case3.png")
 case4=PhotoImage(file="case4.png")
@@ -385,11 +320,7 @@ window.iconphoto(False,logo)
 window.title("Cyber démineur")
 
 
-
 debut_de_partie()
-chrono=time()
-
-
 
 window.mainloop()
 
