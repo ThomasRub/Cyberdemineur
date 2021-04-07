@@ -74,12 +74,13 @@ class Grille:
                 global vie
                 vie-=1
                 global bombes_trouvees
-                verif_fin(vie,bombes_trouvees)
                 bombes_trouvees+=1
-            self.grille_label[ligne][colonne]['image']=self.image_label
-            self.grille_button[ligne][colonne].grid_remove()
-            self.grille[ligne][colonne][1]=1
-            verif_fin(vie,bombes_trouvees)
+            try :
+                self.grille_label[ligne][colonne]['image']=self.image_label
+                self.grille_button[ligne][colonne].grid_remove()
+                self.grille[ligne][colonne][1]=1
+            except :
+                    pass
 
     def click(self,ligne,colonne):
         """Méthode qui dévoile la case si le bouton est cliqué (via le clic gauche). Elle efface le bouton,
@@ -189,6 +190,10 @@ def generer_grille(x,y,nb_bombes):
     return grille
 
 def debut_de_partie():
+    try:
+        suppr_tout()
+    except:
+        pass
     global grille_console
     grille_console=generer_grille(l,c,bombes)
     affiche_grille_console(grille_console)
@@ -208,24 +213,23 @@ def verif_fin(vie,bombes_trouvees):
         etat='victoire'
         fin_du_jeu(etat)
 
-
 def fin_du_jeu(etat):
     if etat=='defaite':
+        image_fond_label.destroy()
         suppr_tout()
         print("Perdu")
         ecran_fin=Label(window,image=ecran_defaite)
         ecran_fin.place(x=0,y=0,relwidth=1,relheight=1)
         #ecran_fin.transient ( parent=None )        # met ecran_fin au premier plan (fonctionne mais renvoi une erreur)
-        sleep(5)
-        window.destroy()
+        rejouer=Button(window, text='Abandonner ?',command=quitter,height=7,width=15)
+        rejouer.pack(padx=400,pady=400)
     else:
         print('Bravo')
+        image_fond_label.destroy()
         suppr_tout()
         ecran_fin=Label(window,image=ecran_victoire)
         ecran_fin.place(x=0,y=0,relwidth=1,relheight=1)
         #ecran_fin.transient ( parent=None )        # met ecran_fin au premier plan (fonctionne mais renvoi une erreur)
-        sleep(5)
-        window.destroy()
 
 def temps_chrono(temps):
     """retourne le temps passé en nano-secondes sous la forme d'un tuple (minutes,secondes,milli-secondes)"""
@@ -266,6 +270,9 @@ def musique(son):
 
 def suppr_tout():
     grille.destroy()
+
+def quitter():
+    window.destroy()
 
 ########################################################################################################
 ######################################### PROGRAMME PRINCIPAL ##########################################
@@ -325,7 +332,7 @@ case6=PhotoImage(file="case6.png")
 case7=PhotoImage(file="case7.png")
 case8=PhotoImage(file="case8.png")
 fond4=PhotoImage(file="fond4.png")
-ecran_victoire=PhotoImage(file="ecran_victoire.png")
+ecran_victoire=PhotoImage(file="ecran_victoire4.png")
 ecran_defaite=PhotoImage(file="ecran_defaite.png")
 logo=PhotoImage(file="logo_cyberdemineur.png")
 
