@@ -136,6 +136,34 @@ class Grille:
 ######################################### FONCTIONS ####################################################
 ########################################################################################################
 
+def ecran_titre():
+    try:
+        image_fond_label['image']=menu_fond
+        ecrant.destroy()
+        abando.destroy()
+    except:
+        pass
+    global Jouer,Quitter,Classement,Options
+    Jouer=Button(window,image=jouer,width=450,height=203,command=lambda:menu_jouer())
+    Jouer.place(x=300,y=300)
+
+    Quitter=Button(window,image=quitter,width=450,height=203,command=lambda:window.destroy())
+    Quitter.place(x=300,y=550)
+
+    Classement=Button(window,image=classement,width=450,height=203)
+    Classement.place(x=950,y=300)
+
+    Options=Button(window,image=options,width=450,height=203)
+    Options.place(x=950,y=550)
+
+def menu_jouer():
+    Jouer.destroy()
+    Quitter.destroy()
+    Classement.destroy()
+    Options.destroy()
+
+    debut_facile()
+
 def affiche_grille_console(grille):
     """Permet d'afficher la grille dans la console
     Utilisée pour le développement
@@ -189,8 +217,81 @@ def generer_grille(x,y,nb_bombes):
 
     return grille
 
+def debut_facile():
+    """Début de la partie en difficulté facile. On initialise le chrono, et génère la grille 
+    (en donnant l = nombre de lignes, c= nombre de colonne, bombes = nombre de bombes, vie = le nombre de vie)
+    """
+    global l,c,bombes,vie,premier_clic,nbmax,casehaut,casebas,bombes_trouvees   #Toutes ces variables sont utilisés au sein du code
+    l=9
+    c=9
+    bombes=10
+    vie=3
+
+    nbmax=(l*c)-1   # indice de la dernière cases, tout en bas à droite (dans un cadre de 9x9, cette case sera 80)
+    casehaut=[]
+    casebas=[]
+    casehaut.append(0)
+    for i in range(l):
+        casehaut.append((i+1)*c)
+        casebas.append(((i+1)*c)-1)
+    casebas.append(c*l)
+    bombes_trouvees=0
+    
+    debut_de_partie()
+    chrono=time_ns()
+
+def debut_normal():
+    """Début de la partie en difficulté normal. On initialise le chrono, et génère la grille 
+    (en donnant l = nombre de lignes, c = nombre de colonne, bombes = nombre de bombes, vie = le nombre de vie)
+    """
+    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees   #Toutes ces variables sont utilisés au sein du code
+    l=12
+    c=12
+    bombes=25
+    vie=3
+
+    nbmax=(l*c)-1   # indice de la dernière cases, tout en bas à droite (dans un cadre de 9x9, cette case sera 80)
+    casehaut=[]
+    casebas=[]
+    casehaut.append(0)
+    for i in range(l):
+        casehaut.append((i+1)*c)
+        casebas.append(((i+1)*c)-1)
+    casebas.append(c*l)
+    bombes_trouvees=0
+    
+    debut_de_partie()
+    chrono=time_ns()
+
+def debut_difficile():
+    """Début de la partie en difficulté maximale. On initialise le chrono, et génère la grille 
+    (en donnant l = nombre de lignes, c = nombre de colonne, bombes = nombre de bombes, vie = le nombre de vie)
+    """
+    global l,c,bombes,vie,premier_clic,nbmax,casehaut,casebas,bombes_trouvees   #Toutes ces variables sont utilisés au sein du code
+    l=13
+    c=22
+    bombes=80
+    vie=3
+
+    nbmax=(l*c)-1   # indice de la dernière cases, tout en bas à droite (dans un cadre de 9x9, cette case sera 80)
+    casehaut=[]
+    casebas=[]
+    casehaut.append(0)
+    for i in range(l):
+        casehaut.append((i+1)*c)
+        casebas.append(((i+1)*c)-1)
+    casebas.append(c*l)
+    bombes_trouvees=0
+    
+    debut_de_partie()
+    chrono=time_ns()
+
 def debut_de_partie():
     try:
+        global image_fond_label
+
+        image_fond_label=Label(window, image=fond4)
+        image_fond_label.place(x=0,y=0,relwidth=1,relheight=1) 
         suppr_tout()
     except:
         pass
@@ -200,7 +301,7 @@ def debut_de_partie():
 
     global grille
     grille=Frame(window)
-    grille.pack(pady=int(resolution[-3])+50)
+    grille.pack(pady=int(resolution[-3]))
 
     gr=Grille(grille_console,58,62)
     gr.generer_boutons()
@@ -214,22 +315,21 @@ def verif_fin(vie,bombes_trouvees):
         fin_du_jeu(etat)
 
 def fin_du_jeu(etat):
+    global image_fond_label,ecrant,rejouer,abando
     if etat=='defaite':
-        image_fond_label.destroy()
         suppr_tout()
         print("Perdu")
-        ecran_fin=Label(window,image=ecran_defaite)
-        ecran_fin.place(x=0,y=0,relwidth=1,relheight=1)
-        #ecran_fin.transient ( parent=None )        # met ecran_fin au premier plan (fonctionne mais renvoi une erreur)
-        rejouer=Button(window, text='Abandonner ?',command=quitter,height=7,width=15)
-        rejouer.pack(padx=400,pady=400)
+        image_fond_label['image']=ecran_defaite
+        image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
+        abando=Button(window, text='Abandonner ?',command=lambda:window.destroy(),height=7,width=15)
+        abando.place(x=950,y=300)
+        ecrant=Button(window,text='Retours à l\'écran-titre ?',command=lambda:ecran_titre())
+        ecrant.place(x=950,y=550)
     else:
         print('Bravo')
-        image_fond_label.destroy()
         suppr_tout()
-        ecran_fin=Label(window,image=ecran_victoire)
-        ecran_fin.place(x=0,y=0,relwidth=1,relheight=1)
-        #ecran_fin.transient ( parent=None )        # met ecran_fin au premier plan (fonctionne mais renvoi une erreur)
+        image_fond_label['image']=ecran_victoire
+        image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
 
 def temps_chrono(temps):
     """retourne le temps passé en nano-secondes sous la forme d'un tuple (minutes,secondes,milli-secondes)"""
@@ -267,34 +367,12 @@ def musique(son):
         PlaySound("mainloop_cyberdemineur.wav",SND_ASYNC|SND_LOOP)
         son=0
 
-
 def suppr_tout():
     grille.destroy()
-
-def quitter():
-    window.destroy()
 
 ########################################################################################################
 ######################################### PROGRAMME PRINCIPAL ##########################################
 ########################################################################################################
-
-
-# génération de la grille, placement des bombes et des chiffres
-l=9         # nombre de lignes
-c=9             # nombre de colones
-bombes=10       # nombre de bombes
-vie=3
-premier_clic=False
-
-nbmax=(l*c)-1   # indice de la dernière cases, tout en bas à droite (dans un cadre de 9x9, cette case sera 80)
-casehaut=[]
-casebas=[]
-casehaut.append(0)
-for i in range(l):
-    casehaut.append((i+1)*c)
-    casebas.append(((i+1)*c)-1)
-casebas.append(c*l)
-bombes_trouvees=0
 
 # création de la fenêtre et adaptation de l'écran
 window=Tk()
@@ -319,6 +397,12 @@ window.bind("<Escape>", lambda event: window.attributes("-fullscreen", False))
 window.bind("<F4>",lambda event: window.destroy())
 
 # définition des images dans le code
+jouer=PhotoImage(file="menu_jouer.png")
+menu_fond=PhotoImage(file='menu_fond.png')
+quitter=PhotoImage(file="menu_quitter.png")
+classement=PhotoImage(file="menu_classement.png")
+options=PhotoImage(file="menu_options.png")
+
 case_bombe=PhotoImage(file="case_bombe.png")
 case_cachee=PhotoImage(file="case_cachee.png")
 case_drapeau=PhotoImage(file="case_drapeau.png")
@@ -331,22 +415,21 @@ case5=PhotoImage(file="case5.png")
 case6=PhotoImage(file="case6.png")
 case7=PhotoImage(file="case7.png")
 case8=PhotoImage(file="case8.png")
-fond4=PhotoImage(file="fond4.png")
+fond4=PhotoImage(file="fond3.png")
 ecran_victoire=PhotoImage(file="ecran_victoire4.png")
 ecran_defaite=PhotoImage(file="ecran_defaite.png")
 logo=PhotoImage(file="logo_cyberdemineur.png")
 
 # définition de l'image de fond
-image_fond_label=Label(window, image=fond4)
+image_fond_label=Label(window, image=menu_fond)
 image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
 
 window.configure(bg="black")
 window.iconphoto(False,logo)
 window.title("Cyber démineur")
 
-# début du chrono et de la partie
-debut_de_partie()
-chrono=time_ns()
+
+ecran_titre()
 
 # lecture des musiques
 son_joue=0
@@ -356,7 +439,7 @@ window.mainloop()
 
 # fin du chrono, affichage du temps et du score dans la console
 # (temporaire)
-chrono=(time_ns()-chrono)
+"""chrono=(time_ns()-chrono)
 
 print(temps_chrono(chrono))
-print(int(score(chrono,3)))
+print(int(score(chrono,3)))"""
