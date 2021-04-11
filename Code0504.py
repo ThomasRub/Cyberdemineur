@@ -87,7 +87,7 @@ class Grille:
         Elle prends aussi en charge de dévoiler les cases adjacentes à une case vide (diagonale non prise en charge)"""
         
 
-        while self.premier_clic==False and self.grille[ligne][colonne][0] == 9:
+        while self.premier_clic==False and self.grille[ligne][colonne][0] != 0:
             self.grille=generer_grille(l,c,bombes)
             print('---------------------------')
             affiche_grille_console(self.grille)
@@ -353,3 +353,4 @@ chrono=(time_ns()-chrono)
 
 print(temps_chrono(chrono))
 print(int(score(chrono,3)))
+
