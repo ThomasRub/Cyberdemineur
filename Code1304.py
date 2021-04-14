@@ -150,36 +150,36 @@ def ecran_titre():
         v_sauver.destroy()
     except:
         pass
-    global menu_Jouer,menu_Quitter,menu_Classement,menu_Options
-    menu_Jouer=Button(window,image=jouer,width=450,height=203,command=lambda:ecran_difficultes())
-    menu_Jouer.place(x=300,y=300)
+    global menu_jouer,menu_quitter,menu_classement,menu_options
+    menu_jouer=Button(window,image=jouer,width=450,height=203,command=lambda:ecran_difficultes())
+    menu_jouer.place(x=300,y=300)
 
-    menu_Quitter=Button(window,image=quitter,width=450,height=203,command=lambda:window.destroy())
-    menu_Quitter.place(x=300,y=550)
+    menu_quitter=Button(window,image=quitter,width=450,height=203,command=lambda:window.destroy())
+    menu_quitter.place(x=300,y=550)
 
-    menu_Classement=Button(window,image=classement,width=450,height=203,command=lambda:ecran_classement())
-    menu_Classement.place(x=950,y=300)
+    menu_classement=Button(window,image=classement,width=450,height=203,command=lambda:ecran_classement())
+    menu_classement.place(x=950,y=300)
 
-    menu_Options=Button(window,image=options,width=450,height=203,command=lambda:ecran_options())
-    menu_Options.place(x=950,y=550)
+    menu_options=Button(window,image=options,width=450,height=203,command=lambda:ecran_options())
+    menu_options.place(x=950,y=550)
 
 def ecran_classement():
     try:
         image_fond_label['image']=classement_fond
-        menu_Jouer.destroy()
-        menu_Quitter.destroy()
-        menu_Classement.destroy()
-        menu_Options.destroy()
+        menu_jouer.destroy()
+        menu_quitter.destroy()
+        menu_classement.destroy()
+        menu_options.destroy()
     except:
         pass
 
 def ecran_difficultes():
     try:
         image_fond_label['image']=difficultes_fond
-        menu_Jouer.destroy()
-        menu_Quitter.destroy()
-        menu_Classement.destroy()
-        menu_Options.destroy()
+        menu_jouer.destroy()
+        menu_quitter.destroy()
+        menu_classement.destroy()
+        menu_options.destroy()
     except:
         pass
     global difficulte_facile,difficulte_moyen,difficulte_difficile
@@ -195,18 +195,18 @@ def ecran_difficultes():
 def ecran_options():
     try:
         image_fond_label['image']=options_fond
-        menu_Jouer.destroy()
-        menu_Quitter.destroy()
-        menu_Classement.destroy()
-        menu_Options.destroy()
+        menu_jouer.destroy()
+        menu_quitter.destroy()
+        menu_classement.destroy()
+        menu_options.destroy()
     except:
         pass
 
 def menu_jouer():
-    menu_Jouer.destroy()
-    menu_Quitter.destroy()
-    menu_Classement.destroy()
-    menu_Options.destroy()
+    menu_jouer.destroy()
+    menu_quitter.destroy()
+    menu_classement.destroy()
+    menu_options.destroy()
 
     debut_facile()
 

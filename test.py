@@ -139,50 +139,70 @@ class Grille:
 
 def ecran_titre():
     try:
-        image_fond_label['image']=menu_fond
+        image_fond_label['image']=img_menu_fond
         d_menu.destroy()
         d_abando.destroy()
     except:
         pass
     try:
-        image_fond_label['image']=menu_fond
+        image_fond_label['image']=img_menu_fond
         v_menu.destroy()
         v_sauver.destroy()
     except:
         pass
-    global menu_Jouer,menu_Quitter,menu_Classement,menu_Options
-    menu_Jouer=Button(window,image=jouer,width=450,height=203,command=lambda:ecran_difficultes())
-    menu_Jouer.place(x=300,y=300)
+    try:
+        image_fond_label['image']=img_menu_fond
+        options_bouton_aide.destroy()
+        options_bouton_fond.destroy()
+        options_bouton_menu.destroy()
+        options_bouton_musique.destroy()
+    except:
+        pass
+    try:
+        image_fond_label['image']=img_menu_fond
+    except:
+        pass
+    try:
+        image_fond_label['image']=img_menu_fond
+        difficulte_facile.destroy()
+        difficulte_moyen.destroy()
+        difficulte_difficile.destroy()
+        difficulte_menu.destroy()
+    except:
+        pass
+    global menu_jouer,menu_quitter,menu_classement,menu_options
+    menu_jouer=Button(window,image=img_menu_bouton_jouer,width=450,height=203,command=lambda:ecran_difficultes())
+    menu_jouer.place(x=300,y=300)
 
-    menu_Quitter=Button(window,image=quitter,width=450,height=203,command=lambda:window.destroy())
-    menu_Quitter.place(x=300,y=550)
+    menu_quitter=Button(window,image=img_menu_bouton_quitter,width=450,height=203,command=lambda:window.destroy())
+    menu_quitter.place(x=300,y=550)
 
-    menu_Classement=Button(window,image=classement,width=450,height=203,command=lambda:ecran_classement())
-    menu_Classement.place(x=950,y=300)
+    menu_classement=Button(window,image=img_menu_bouton_classement,width=450,height=203,command=lambda:ecran_classement())
+    menu_classement.place(x=950,y=300)
 
-    menu_Options=Button(window,image=options,width=450,height=203,command=lambda:ecran_options())
-    menu_Options.place(x=950,y=550)
+    menu_options=Button(window,image=img_menu_bouton_options,width=450,height=203,command=lambda:ecran_options())
+    menu_options.place(x=950,y=550)
 
 def ecran_classement():
     try:
         image_fond_label['image']=classement_fond
-        menu_Jouer.destroy()
-        menu_Quitter.destroy()
-        menu_Classement.destroy()
-        menu_Options.destroy()
+        menu_jouer.destroy()
+        menu_quitter.destroy()
+        menu_classement.destroy()
+        menu_options.destroy()
     except:
         pass
 
 def ecran_difficultes():
     try:
         image_fond_label['image']=difficultes_fond
-        menu_Jouer.destroy()
-        menu_Quitter.destroy()
-        menu_Classement.destroy()
-        menu_Options.destroy()
+        menu_jouer.destroy()
+        menu_quitter.destroy()
+        menu_classement.destroy()
+        menu_options.destroy()
     except:
         pass
-    global difficulte_facile,difficulte_moyen,difficulte_difficile
+    global difficulte_facile,difficulte_moyen,difficulte_difficile,difficulte_menu
     difficulte_facile=Button(window,image=difficultes_bouton_facile,width=450,height=203,command=lambda:debut_facile())
     difficulte_facile.place(x=300,y=300)
 
@@ -192,23 +212,30 @@ def ecran_difficultes():
     difficulte_difficile=Button(window,image=difficultes_bouton_difficile,width=450,height=203,command=lambda:debut_difficile())
     difficulte_difficile.place(x=950,y=300)
 
+    difficulte_menu=Button(window,image=difficultes_bouton_menu,width=450,height=203,command=lambda:ecran_titre())
+    difficulte_menu.place(x=950,y=550)
+
 def ecran_options():
     try:
         image_fond_label['image']=options_fond
-        menu_Jouer.destroy()
-        menu_Quitter.destroy()
-        menu_Classement.destroy()
-        menu_Options.destroy()
+        menu_jouer.destroy()
+        menu_quitter.destroy()
+        menu_classement.destroy()
+        menu_options.destroy()
     except:
         pass
+    global options_bouton_aide,options_bouton_fond,options_bouton_menu,options_bouton_musique
+    options_bouton_aide=Button(window,image=img_options_bouton_aide,width=450,height=203,command=lambda:aide())
+    options_bouton_aide.place(x=300,y=300)
 
-def menu_jouer():
-    menu_Jouer.destroy()
-    menu_Quitter.destroy()
-    menu_Classement.destroy()
-    menu_Options.destroy()
+    options_bouton_fond=Button(window,image=img_options_bouton_fond,width=450,height=203,command=lambda:changer_fond())
+    options_bouton_fond.place(x=300,y=550)
 
-    debut_facile()
+    options_bouton_menu=Button(window,image=img_options_bouton_menu,width=450,height=203,command=lambda:ecran_titre())
+    options_bouton_menu.place(x=950,y=550)
+
+    options_bouton_musique=Button(window,image=img_options_bouton_musique,width=450,height=203,command=lambda:musique(son_joue))
+    options_bouton_musique.place(x=950,y=300)
 
 def affiche_grille_console(grille):
     """Permet d'afficher la grille dans la console
@@ -399,6 +426,12 @@ def fin_du_jeu(etat):
         v_sauver=Button(window,image=bravo_score)
         v_sauver.place(x=850,y=550)
 
+def aide():
+    pass
+
+def changer_fond():
+    pass
+
 def temps_chrono(temps):
     """retourne le temps passé en nano-secondes sous la forme d'un tuple (minutes,secondes,milli-secondes)"""
     ms=0
@@ -473,13 +506,17 @@ window.bind("<Escape>", lambda event: window.attributes("-fullscreen", False))
 window.bind("<F4>",lambda event: window.destroy())
 
 # définition des images dans le code
-jouer=PhotoImage(file="menu_bouton_jouer.png")
-menu_fond=PhotoImage(file='menu_fond.png')
-quitter=PhotoImage(file="menu_bouton_quitter.png")
-classement=PhotoImage(file="menu_bouton_classement.png")
-options=PhotoImage(file="menu_bouton_options.png")
+img_menu_bouton_jouer=PhotoImage(file="menu_bouton_jouer.png")
+img_menu_fond=PhotoImage(file='menu_fond.png')
+img_menu_bouton_quitter=PhotoImage(file="menu_bouton_quitter.png")
+img_menu_bouton_classement=PhotoImage(file="menu_bouton_classement.png")
+img_menu_bouton_options=PhotoImage(file="menu_bouton_options.png")
 
-options_fond=PhotoImage(file="options_fond.png")
+img_options_fond=PhotoImage(file="options_fond.png")
+img_options_bouton_aide=PhotoImage(file="options_bouton_aide.png")
+img_options_bouton_fond=PhotoImage(file="options_bouton_fond.png")
+img_options_bouton_menu=PhotoImage(file="options_bouton_menu.png")
+img_options_bouton_musique=PhotoImage(file="options_bouton_musique.png")
 
 classement_fond=PhotoImage(file="classement_fond.png")
 
@@ -487,6 +524,7 @@ difficultes_fond=PhotoImage(file="difficultes_fond.png")
 difficultes_bouton_facile=PhotoImage(file="difficultes_bouton_facile.png")
 difficultes_bouton_moyen=PhotoImage(file="difficultes_bouton_moyen.png")
 difficultes_bouton_difficile=PhotoImage(file="difficultes_bouton_difficile.png")
+difficultes_bouton_menu=PhotoImage(file="difficultes_bouton_menu.png")
 
 ecran_defaite=PhotoImage(file="dommage_fond.png")
 dommage_menu=PhotoImage(file="dommage_bouton_menu.png")
@@ -507,12 +545,16 @@ case5=PhotoImage(file="case5.png")
 case6=PhotoImage(file="case6.png")
 case7=PhotoImage(file="case7.png")
 case8=PhotoImage(file="case8.png")
+
+fond1=PhotoImage(file="fond1.png")
+fond2=PhotoImage(file="fond2.png")
+fond3=PhotoImage(file="fond4.png")
 fond4=PhotoImage(file="fond4.png")
 
 logo=PhotoImage(file="logo_cyberdemineur.png")
 
 # définition de l'image de fond
-image_fond_label=Label(window, image=menu_fond)
+image_fond_label=Label(window, image=img_menu_fond)
 image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
 
 window.configure(bg="black")
