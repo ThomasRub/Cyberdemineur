@@ -192,6 +192,9 @@ def ecran_classement():
         menu_options.destroy()
     except:
         pass
+    global classement_menu
+    classement_menu=Button(window,image=difficultes_bouton_menu,width=450,height=203,command=lambda:ecran_titre())
+    classement_menu.place(x=950,y=550)
 
 def ecran_difficultes():
     try:
@@ -234,7 +237,7 @@ def ecran_options():
     options_bouton_menu=Button(window,image=img_options_bouton_menu,width=450,height=203,command=lambda:ecran_titre())
     options_bouton_menu.place(x=950,y=550)
 
-    options_bouton_musique=Button(window,image=img_options_bouton_musique,width=450,height=203,command=lambda:musique(son_joue))
+    options_bouton_musique=Button(window,image=img_options_bouton_musique,width=450,height=203,command=lambda:changer_musique())
     options_bouton_musique.place(x=950,y=300)
 
 def affiche_grille_console(grille):
@@ -381,7 +384,7 @@ def debut_de_partie():
     try:
         global image_fond_label
 
-        image_fond_label=Label(window, image=fond4)
+        image_fond_label=Label(window, image=fond_en_cours)
         image_fond_label.place(x=0,y=0,relwidth=1,relheight=1) 
         suppr_tout()
     except:
@@ -427,10 +430,19 @@ def fin_du_jeu(etat):
         v_sauver.place(x=850,y=550)
 
 def aide():
-    pass
+    print("dévoilez les cases et trouvez lez bombes")
 
 def changer_fond():
-    pass
+    """ permet de changer de fond à partir du bouton associé dans les options """
+    global fond_en_cours
+    if fond_en_cours==fond1:
+        fond_en_cours=fond2
+    elif fond_en_cours==fond2:
+        fond_en_cours=fond3
+    elif fond_en_cours==fond3:
+        fond_en_cours=fond4
+    elif fond_en_cours==fond4:
+        fond_en_cours=fond1
 
 def temps_chrono(temps):
     """retourne le temps passé en nano-secondes sous la forme d'un tuple (minutes,secondes,milli-secondes)"""
@@ -457,19 +469,20 @@ def score(chrono,nb_vies):
     score=(1/sqrt(chrono/10))*exp(2*nb_vies+5)*10**5
     return score
 
-def musique(son):
-    """cette fonction change de musique quand on appuie sur F12
-    utilisée pour le développement"""
-    window.bind("<F12>",lambda event:musique(son))
-    if son==0:
+def changer_musique():
+    """cette fonction change de musique quand on appuie sur F12 ou sur le bouton dédié à cet effet dans les 
+    options"""
+    global son_joue
+    if son_joue==0:
         PlaySound("loop_menu_cyberdemineur.wav",SND_ASYNC|SND_LOOP)
-        son=1
-    elif son==1:
+        son_joue=1
+    elif son_joue==1:
         PlaySound("mainloop_cyberdemineur.wav",SND_ASYNC|SND_LOOP)
-        son=0
+        son_joue=0
 
 def inserer_db(score,temps):
-    inserer="SELECT * FROM FACILE"      # insérer du code SQL entre les " "
+    #nom=input("insérez votre nom")
+    inserer="INSERT INTO FACILE (nom,score,temps) VALUES ({},{},{})".format('thomas',1254,'54:21:0356')      # insérer du code SQL entre les " "
     cursor.execute(inserer)
 
 def suppr_tout():
@@ -561,12 +574,17 @@ window.configure(bg="black")
 window.iconphoto(False,logo)
 window.title("Cyber démineur")
 
+fond_en_cours=fond1
 
 ecran_titre()
 
 # lecture des musiques
 son_joue=0
-musique(son_joue)
+changer_musique()
+window.bind("<F12>",lambda event:changer_musique())
+
+window.bind("<F5>",lambda event:inserer_db(123,"1235"))
+
 
 window.mainloop()
 
