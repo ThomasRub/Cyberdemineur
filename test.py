@@ -303,7 +303,7 @@ def debut_facile():
         difficulte_difficile.destroy()
     except:
         pass
-    global l,c,bombes,vie,premier_clic,nbmax,casehaut,casebas,bombes_trouvees   #Toutes ces variables sont utilisés au sein du code
+    global l,c,bombes,vie,premier_clic,nbmax,casehaut,casebas,bombes_trouvees,chrono   #Toutes ces variables sont utilisés au sein du code
     l=9
     c=9
     bombes=10
@@ -332,7 +332,7 @@ def debut_normal():
         difficulte_difficile.destroy()
     except:
         pass
-    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees   #Toutes ces variables sont utilisés au sein du code
+    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees,chrono   #Toutes ces variables sont utilisés au sein du code
     l=12
     c=12
     bombes=25
@@ -361,7 +361,7 @@ def debut_difficile():
         difficulte_difficile.destroy()
     except:
         pass
-    global l,c,bombes,vie,premier_clic,nbmax,casehaut,casebas,bombes_trouvees   #Toutes ces variables sont utilisés au sein du code
+    global l,c,bombes,vie,premier_clic,nbmax,casehaut,casebas,bombes_trouvees,chrono   #Toutes ces variables sont utilisés au sein du code
     l=13
     c=22
     bombes=80
@@ -409,7 +409,7 @@ def verif_fin(vie,bombes_trouvees):
         fin_du_jeu(etat)
 
 def fin_du_jeu(etat):
-    global image_fond_label,ecrant,d_menu,d_abando,v_menu,v_sauver
+    global image_fond_label,ecrant,d_menu,d_abando,v_menu,v_sauver,chrono
     if etat=='defaite':
         suppr_tout()
         print("Perdu")
@@ -426,8 +426,12 @@ def fin_du_jeu(etat):
         image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
         v_menu=Button(window,image=bravo_menu,command=lambda:ecran_titre())
         v_menu.place(x=850,y=300)
-        v_sauver=Button(window,image=bravo_score)
+        v_sauver=Button(window,image=bravo_score,command=lambda:inserer_db_popup(int(score(chrono,vie)),temps_str(temps_chrono(chrono))))
         v_sauver.place(x=850,y=550)
+
+        chrono=(time_ns()-chrono)
+        print(temps_str(temps_chrono(chrono)))
+        print(int(score(chrono,3)))
 
 def aide():
     print("dévoilez les cases et trouvez lez bombes")
@@ -464,6 +468,14 @@ def temps_chrono(temps):
     temps_final=(m,s,ms)
     return temps_final
 
+def temps_str(temps):
+    temps=str(temps)
+    temps=temps.replace("(","")
+    temps=temps.replace(")","")
+    temps=temps.replace(" ","")
+    temps=temps.replace(",",":")
+    return temps
+
 def score(chrono,nb_vies):
     """cette fonction génère un score en fonction du temps et du nomber de vies perdus"""
     score=(1/sqrt(chrono/10))*exp(2*nb_vies+5)*10**5
@@ -480,10 +492,28 @@ def changer_musique():
         PlaySound("mainloop_cyberdemineur.wav",SND_ASYNC|SND_LOOP)
         son_joue=0
 
-def inserer_db(score,temps):
-    #nom=input("insérez votre nom")
-    inserer="INSERT INTO FACILE (nom,score,temps) VALUES ({},{},{})".format('thomas',1254,'54:21:0356')      # insérer du code SQL entre les " "
-    cursor.execute(inserer)
+def inserer_db_popup(score,temps):
+    global popup_nom
+    popup_nom=Toplevel()
+    popup_nom.title("Entrez un nom")
+    popup_nom.configure(bg="black")
+    popup_nom.iconphoto(False,logo)
+    popup_nom.transient(window)
+    popup_nom.grab_set()
+
+    nom=StringVar()
+    champ_saisie=Entry(popup_nom,width=20,textvariable=nom)
+    champ_saisie.pack(padx=5,pady=5)
+    champ_saisie.focus()
+
+    bouton_valider=Button(popup_nom,text="Valider",command=lambda:inserer_db(nom.get(),score,temps))
+    bouton_valider.pack()
+
+def inserer_db(nom,score,temps):
+    cursor.execute("INSERT INTO FACILE (nom,score,temps) VALUES (?,?,?)",(nom,score,temps))
+    db.commit()
+    popup_nom.destroy()
+    print("données enregistrées")
 
 def suppr_tout():
     grille.destroy()
@@ -583,17 +613,10 @@ son_joue=0
 changer_musique()
 window.bind("<F12>",lambda event:changer_musique())
 
-window.bind("<F5>",lambda event:inserer_db(123,"1235"))
-
 
 window.mainloop()
 
-# fin du chrono, affichage du temps et du score dans la console
-# (temporaire)
-"""chrono=(time_ns()-chrono)
 
-print(temps_chrono(chrono))
-print(int(score(chrono,3)))"""
 
 # fermeture de la db
 cursor.close()
