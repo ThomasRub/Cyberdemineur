@@ -173,16 +173,16 @@ def ecran_titre():
     except:
         pass
     global menu_jouer,menu_quitter,menu_classement,menu_options
-    menu_jouer=Button(window,image=img_menu_bouton_jouer,width=450,height=203,command=lambda:ecran_difficultes())
+    menu_jouer=Button(window,image=img_menu_bouton_jouer,width=440,height=190,relief="flat",command=lambda:ecran_difficultes())
     menu_jouer.place(x=300,y=300)
 
-    menu_quitter=Button(window,image=img_menu_bouton_quitter,width=450,height=203,command=lambda:window.destroy())
+    menu_quitter=Button(window,image=img_menu_bouton_quitter,width=440,height=190,relief="flat",command=lambda:window.destroy())
     menu_quitter.place(x=300,y=550)
 
-    menu_classement=Button(window,image=img_menu_bouton_classement,width=450,height=203,command=lambda:ecran_classement())
+    menu_classement=Button(window,image=img_menu_bouton_classement,width=440,height=190,relief="flat",command=lambda:ecran_classement())
     menu_classement.place(x=950,y=300)
 
-    menu_options=Button(window,image=img_menu_bouton_options,width=450,height=203,command=lambda:ecran_options())
+    menu_options=Button(window,image=img_menu_bouton_options,width=440,height=190,relief="flat",command=lambda:ecran_options())
     menu_options.place(x=950,y=550)
 
 def ecran_classement():
@@ -196,7 +196,7 @@ def ecran_classement():
     except:
         pass
     global classement_menu
-    classement_menu=Button(window,image=difficultes_bouton_menu,width=450,height=203,command=lambda:ecran_titre())
+    classement_menu=Button(window,image=difficultes_bouton_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
     classement_menu.place(x=950,y=550)
 
 def ecran_difficultes():
@@ -210,16 +210,16 @@ def ecran_difficultes():
     except:
         pass
     global difficulte_facile,difficulte_moyen,difficulte_difficile,difficulte_menu
-    difficulte_facile=Button(window,image=difficultes_bouton_facile,width=450,height=203,command=lambda:debut_facile())
+    difficulte_facile=Button(window,image=difficultes_bouton_facile,width=440,height=190,relief="flat",command=lambda:debut_facile())
     difficulte_facile.place(x=300,y=300)
 
-    difficulte_moyen=Button(window,image=difficultes_bouton_moyen,width=450,height=203,command=lambda:debut_normal())
+    difficulte_moyen=Button(window,image=difficultes_bouton_moyen,width=440,height=190,relief="flat",command=lambda:debut_normal())
     difficulte_moyen.place(x=300,y=550)
 
-    difficulte_difficile=Button(window,image=difficultes_bouton_difficile,width=450,height=203,command=lambda:debut_difficile())
+    difficulte_difficile=Button(window,image=difficultes_bouton_difficile,width=440,height=190,relief="flat",command=lambda:debut_difficile())
     difficulte_difficile.place(x=950,y=300)
 
-    difficulte_menu=Button(window,image=difficultes_bouton_menu,width=450,height=203,command=lambda:ecran_titre())
+    difficulte_menu=Button(window,image=difficultes_bouton_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
     difficulte_menu.place(x=950,y=550)
 
 def ecran_options():
@@ -233,16 +233,16 @@ def ecran_options():
     except:
         pass
     global options_bouton_aide,options_bouton_fond,options_bouton_menu,options_bouton_musique
-    options_bouton_aide=Button(window,image=img_options_bouton_aide,width=450,height=203,command=lambda:aide())
+    options_bouton_aide=Button(window,image=img_options_bouton_aide,width=440,height=190,relief="flat",command=lambda:aide())
     options_bouton_aide.place(x=300,y=300)
 
-    options_bouton_fond=Button(window,image=img_options_bouton_fond,width=450,height=203,command=lambda:changer_fond())
+    options_bouton_fond=Button(window,image=img_options_bouton_fond,width=440,height=190,relief="flat",command=lambda:changer_fond())
     options_bouton_fond.place(x=300,y=550)
 
-    options_bouton_menu=Button(window,image=img_options_bouton_menu,width=450,height=203,command=lambda:ecran_titre())
+    options_bouton_menu=Button(window,image=img_options_bouton_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
     options_bouton_menu.place(x=950,y=550)
 
-    options_bouton_musique=Button(window,image=img_options_bouton_musique,width=450,height=203,command=lambda:changer_musique())
+    options_bouton_musique=Button(window,image=img_options_bouton_musique,width=440,height=190,relief="flat",command=lambda:changer_musique())
     options_bouton_musique.place(x=950,y=300)
 
 def affiche_grille_console(grille):
@@ -425,16 +425,16 @@ def fin_du_jeu(etat):
         image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
         d_abando=Button(window, text='Abandonner ?',command=lambda:window.destroy())
         d_abando.place(x=850,y=300)
-        d_menu=Button(window,image=dommage_menu,command=lambda:ecran_titre())
+        d_menu=Button(window,image=dommage_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
         d_menu.place(x=850,y=550)
     else:
         suppr_tout()
         print('Bravo')
         image_fond_label['image']=ecran_victoire
         image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
-        v_menu=Button(window,image=bravo_menu,command=lambda:ecran_titre())
+        v_menu=Button(window,image=bravo_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
         v_menu.place(x=850,y=300)
-        v_sauver=Button(window,image=bravo_score,command=lambda:inserer_db_popup(int(score(chrono,vie)),temps_str(temps_chrono(chrono))))
+        v_sauver=Button(window,image=bravo_score,width=440,height=190,relief="flat",command=lambda:inserer_db_popup(int(score(chrono,vie)),temps_str(temps_chrono(chrono))))
         v_sauver.place(x=850,y=550)
 
         chrono=(time_ns()-chrono)
