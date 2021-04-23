@@ -495,12 +495,30 @@ def changer_musique():
     """cette fonction change de musique quand on appuie sur F12 ou sur le bouton dédié à cet effet dans les 
     options"""
     global son_joue
-    if son_joue==0:
-        PlaySound("loop_menu_cyberdemineur.wav",SND_ASYNC|SND_LOOP)
+    if son_joue==6:
+        PlaySound("mainloop1.wav",SND_ASYNC|SND_LOOP)
         son_joue=1
+        print("son = mainloop1")
     elif son_joue==1:
-        PlaySound("mainloop_cyberdemineur.wav",SND_ASYNC|SND_LOOP)
-        son_joue=0
+        PlaySound("mainloop2.wav",SND_ASYNC|SND_LOOP)
+        son_joue=2
+        print("son = mainloop2")
+    elif son_joue==2:
+        PlaySound("mainloop3.wav",SND_ASYNC|SND_LOOP)
+        son_joue=3
+        print("son = mainloop3")
+    elif son_joue==3:
+        PlaySound("mainloop4.wav",SND_ASYNC|SND_LOOP)
+        son_joue=4
+        print("son = mainloop4")
+    elif son_joue==4:
+        PlaySound("mainloop5.wav",SND_ASYNC|SND_LOOP)
+        son_joue=5
+        print("son = mainloop5")
+    elif son_joue==5:
+        PlaySound("mainloop6.wav",SND_ASYNC|SND_LOOP)
+        son_joue=6
+        print("son = mainloop6")
 
 def inserer_db_popup(score,temps):
     """ crée une pop-up qui permet d'insérer un nom pour la db """
@@ -622,7 +640,7 @@ fond_en_cours=fond4
 ecran_titre()
 
 # lecture des musiques
-son_joue=0
+son_joue=1
 changer_musique()
 window.bind("<F12>",lambda event:changer_musique())
 
