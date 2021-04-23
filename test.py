@@ -172,6 +172,11 @@ def ecran_titre():
         difficulte_menu.destroy()
     except:
         pass
+    try:
+        image_fond_label['image']=img_menu_fond
+        classement_menu.destroy()
+    except:
+        pass
     global menu_jouer,menu_quitter,menu_classement,menu_options
     menu_jouer=Button(window,image=img_menu_bouton_jouer,width=440,height=190,relief="flat",command=lambda:ecran_difficultes())
     menu_jouer.place(x=300,y=300)
