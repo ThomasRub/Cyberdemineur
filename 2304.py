@@ -177,6 +177,18 @@ def ecran_titre():
         classement_menu.destroy()
     except:
         pass
+    try:
+        classement_frame_facile.destroy()
+    except:
+        pass
+    try:
+        classement_frame_moyen.destroy()
+    except:
+        pass
+    try:
+        classement_frame_difficile.destroy()
+    except:
+        pass
     global menu_jouer,menu_quitter,menu_classement,menu_options
     menu_jouer=Button(window,image=img_menu_bouton_jouer,width=440,height=190,relief="flat",command=lambda:ecran_difficultes())
     menu_jouer.place(x=300,y=300)
@@ -211,7 +223,7 @@ def ecran_classement():
     difficile_menu.place(x=950,y=300)
 
 def classement_difficulte(difficulte):
-    global classements_menu
+    global classements_menu,classement_frame_facile,classement_frame_moyen,classement_frame_difficile
     if difficulte =='facile':
         facile_menu.destroy()
         moyen_menu.destroy()
@@ -221,7 +233,72 @@ def classement_difficulte(difficulte):
         classements_menu=Button(window,image=difficultes_bouton_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
         classements_menu.place(x=600,y=550)
 
-        print('facile')
+        image_fond_label['image']=classement_fond
+
+        classement_frame_facile=Frame(window)
+        classement_frame_facile.pack(pady=130)
+
+        execution_facile=cursor.execute(""" 
+        SELECT nom,score,temps FROM FACILE ORDER BY score
+        """)
+        selection_facile=cursor.fetchall()
+        nom1_facile=selection_facile[0][0]
+        nom2_facile=selection_facile[1][0]
+        nom3_facile=selection_facile[2][0]
+        nom4_facile=selection_facile[3][0]
+        nom5_facile=selection_facile[4][0]
+
+        score1_facile=selection_facile[0][1]
+        score2_facile=selection_facile[2][1]
+        score3_facile=selection_facile[3][1]
+        score4_facile=selection_facile[4][1]
+        score5_facile=selection_facile[5][1]
+
+        temps1_facile=selection_facile[0][2]
+        temps2_facile=selection_facile[2][2]
+        temps3_facile=selection_facile[3][2]
+        temps4_facile=selection_facile[4][2]
+        temps5_facile=selection_facile[5][2]
+
+        tab_nom_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",bg="grey",text="nom")
+        tab_nom_facile.grid(row=0,column=0)
+        tab_score_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",bg="grey",text="score")
+        tab_score_facile.grid(row=0,column=1)
+        tab_temps_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",bg="grey",text="temps")
+        tab_temps_facile.grid(row=0,column=2)
+
+        tab_nom1_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=nom1_facile)
+        tab_nom1_facile.grid(row=1,column=0)
+        tab_nom2_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=nom2_facile)
+        tab_nom2_facile.grid(row=2,column=0)
+        tab_nom3_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=nom3_facile)
+        tab_nom3_facile.grid(row=3,column=0)
+        tab_nom4_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=nom4_facile)
+        tab_nom4_facile.grid(row=4,column=0)
+        tab_nom5_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=nom5_facile)
+        tab_nom5_facile.grid(row=5,column=0)
+
+        tab_score1_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=str(score1_facile))
+        tab_score1_facile.grid(row=1,column=1)
+        tab_score2_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=str(score2_facile))
+        tab_score2_facile.grid(row=2,column=1)
+        tab_score3_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=str(score3_facile))
+        tab_score3_facile.grid(row=3,column=1)
+        tab_score4_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=str(score4_facile))
+        tab_score4_facile.grid(row=4,column=1)
+        tab_score5_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=str(score5_facile))
+        tab_score5_facile.grid(row=5,column=1)
+
+        tab_temps1_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=temps1_facile)
+        tab_temps1_facile.grid(row=1,column=2)
+        tab_temps2_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=temps2_facile)
+        tab_temps2_facile.grid(row=2,column=2)
+        tab_temps3_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=temps3_facile)
+        tab_temps3_facile.grid(row=3,column=2)
+        tab_temps4_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=temps4_facile)
+        tab_temps4_facile.grid(row=4,column=2)
+        tab_temps5_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=temps5_facile)
+        tab_temps5_facile.grid(row=5,column=2)
 
     elif difficulte=='moyen':
         facile_menu.destroy()
@@ -232,7 +309,72 @@ def classement_difficulte(difficulte):
         classements_menu=Button(window,image=difficultes_bouton_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
         classements_menu.place(x=600,y=550)
 
-        print('moyen')
+        image_fond_label['image']=classement_fond
+
+        classement_frame_moyen=Frame(window)
+        classement_frame_moyen.pack(pady=130)
+
+        execution_moyen=cursor.execute(""" 
+        SELECT nom,score,temps FROM MOYEN ORDER BY score
+        """)
+        selection_moyen=cursor.fetchall()
+        nom1_moyen=selection_moyen[0][0]
+        nom2_moyen=selection_moyen[1][0]
+        nom3_moyen=selection_moyen[2][0]
+        nom4_moyen=selection_moyen[3][0]
+        nom5_moyen=selection_moyen[4][0]
+
+        score1_moyen=selection_moyen[0][1]
+        score2_moyen=selection_moyen[2][1]
+        score3_moyen=selection_moyen[3][1]
+        score4_moyen=selection_moyen[4][1]
+        score5_moyen=selection_moyen[5][1]
+
+        temps1_moyen=selection_moyen[0][2]
+        temps2_moyen=selection_moyen[2][2]
+        temps3_moyen=selection_moyen[3][2]
+        temps4_moyen=selection_moyen[4][2]
+        temps5_moyen=selection_moyen[5][2]
+
+        tab_nom_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",bg="grey",text="nom")
+        tab_nom_moyen.grid(row=0,column=0)
+        tab_score_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",bg="grey",text="score")
+        tab_score_moyen.grid(row=0,column=1)
+        tab_temps_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",bg="grey",text="temps")
+        tab_temps_moyen.grid(row=0,column=2)
+
+        tab_nom1_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=nom1_moyen)
+        tab_nom1_moyen.grid(row=1,column=0)
+        tab_nom2_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=nom2_moyen)
+        tab_nom2_moyen.grid(row=2,column=0)
+        tab_nom3_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=nom3_moyen)
+        tab_nom3_moyen.grid(row=3,column=0)
+        tab_nom4_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=nom4_moyen)
+        tab_nom4_moyen.grid(row=4,column=0)
+        tab_nom5_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=nom5_moyen)
+        tab_nom5_moyen.grid(row=5,column=0)
+
+        tab_score1_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=str(score1_moyen))
+        tab_score1_moyen.grid(row=1,column=1)
+        tab_score2_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=str(score2_moyen))
+        tab_score2_moyen.grid(row=2,column=1)
+        tab_score3_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=str(score3_moyen))
+        tab_score3_moyen.grid(row=3,column=1)
+        tab_score4_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=str(score4_moyen))
+        tab_score4_moyen.grid(row=4,column=1)
+        tab_score5_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=str(score5_moyen))
+        tab_score5_moyen.grid(row=5,column=1)
+
+        tab_temps1_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=temps1_moyen)
+        tab_temps1_moyen.grid(row=1,column=2)
+        tab_temps2_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=temps2_moyen)
+        tab_temps2_moyen.grid(row=2,column=2)
+        tab_temps3_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=temps3_moyen)
+        tab_temps3_moyen.grid(row=3,column=2)
+        tab_temps4_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=temps4_moyen)
+        tab_temps4_moyen.grid(row=4,column=2)
+        tab_temps5_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=temps5_moyen)
+        tab_temps5_moyen.grid(row=5,column=2)
 
     elif difficulte=='difficile':
         facile_menu.destroy()
@@ -243,7 +385,72 @@ def classement_difficulte(difficulte):
         classements_menu=Button(window,image=difficultes_bouton_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
         classements_menu.place(x=600,y=550)
 
-        print('difficile')
+        image_fond_label['image']=classement_fond
+
+        classement_frame_difficile=Frame(window)
+        classement_frame_difficile.pack(pady=130)
+
+        execution_difficile=cursor.execute(""" 
+        SELECT nom,score,temps FROM DIFFICILE ORDER BY score
+        """)
+        selection_difficile=cursor.fetchall()
+        nom1_difficile=selection_difficile[0][0]
+        nom2_difficile=selection_difficile[1][0]
+        nom3_difficile=selection_difficile[2][0]
+        nom4_difficile=selection_difficile[3][0]
+        nom5_difficile=selection_difficile[4][0]
+
+        score1_difficile=selection_difficile[0][1]
+        score2_difficile=selection_difficile[2][1]
+        score3_difficile=selection_difficile[3][1]
+        score4_difficile=selection_difficile[4][1]
+        score5_difficile=selection_difficile[5][1]
+
+        temps1_difficile=selection_difficile[0][2]
+        temps2_difficile=selection_difficile[2][2]
+        temps3_difficile=selection_difficile[3][2]
+        temps4_difficile=selection_difficile[4][2]
+        temps5_difficile=selection_difficile[5][2]
+
+        tab_nom_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",bg="grey",text="nom")
+        tab_nom_difficile.grid(row=0,column=0)
+        tab_score_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",bg="grey",text="score")
+        tab_score_difficile.grid(row=0,column=1)
+        tab_temps_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",bg="grey",text="temps")
+        tab_temps_difficile.grid(row=0,column=2)
+
+        tab_nom1_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=nom1_difficile)
+        tab_nom1_difficile.grid(row=1,column=0)
+        tab_nom2_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=nom2_difficile)
+        tab_nom2_difficile.grid(row=2,column=0)
+        tab_nom3_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=nom3_difficile)
+        tab_nom3_difficile.grid(row=3,column=0)
+        tab_nom4_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=nom4_difficile)
+        tab_nom4_difficile.grid(row=4,column=0)
+        tab_nom5_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=nom5_difficile)
+        tab_nom5_difficile.grid(row=5,column=0)
+
+        tab_score1_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=str(score1_difficile))
+        tab_score1_difficile.grid(row=1,column=1)
+        tab_score2_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=str(score2_difficile))
+        tab_score2_difficile.grid(row=2,column=1)
+        tab_score3_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=str(score3_difficile))
+        tab_score3_difficile.grid(row=3,column=1)
+        tab_score4_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=str(score4_difficile))
+        tab_score4_difficile.grid(row=4,column=1)
+        tab_score5_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=str(score5_difficile))
+        tab_score5_difficile.grid(row=5,column=1)
+
+        tab_temps1_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=temps1_difficile)
+        tab_temps1_difficile.grid(row=1,column=2)
+        tab_temps2_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=temps2_difficile)
+        tab_temps2_difficile.grid(row=2,column=2)
+        tab_temps3_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=temps3_difficile)
+        tab_temps3_difficile.grid(row=3,column=2)
+        tab_temps4_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=temps4_difficile)
+        tab_temps4_difficile.grid(row=4,column=2)
+        tab_temps5_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=temps5_difficile)
+        tab_temps5_difficile.grid(row=5,column=2)        
 
 def ecran_difficultes():
     """ génère l'écran des difficultés """

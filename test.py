@@ -15,11 +15,7 @@ L'état de la case peut prendre 3 valeurs:
 """
 
 """ Notes pour plus tard:
-        - http://tkinter.fdex.eu/doc/uwm.html 
-    A faire:
-        - bug des boutons qui ne disparaissent pas
-        - ajustement de la taille des img avec PIL
-        - affichage du classement"""
+        - http://tkinter.fdex.eu/doc/uwm.html """
 
 from random import randint
 from tkinter import*
@@ -27,7 +23,7 @@ from time import time_ns,sleep
 from math import sqrt,exp
 from winsound import PlaySound,SND_ASYNC,SND_LOOP
 import sqlite3
-from PIL import *
+from PIL import Image,ImageTk
 
 ########################################################################################################
 ######################################### CLASSES ######################################################
@@ -146,6 +142,10 @@ class Grille:
 def ecran_titre():
     """ génère l'écran du menu principal """
     try:
+        classements_menu.destroy()
+    except:
+        pass
+    try:
         d_menu.destroy()
         d_abando.destroy()
     except:
@@ -177,6 +177,18 @@ def ecran_titre():
         classement_menu.destroy()
     except:
         pass
+    try:
+        classement_frame_facile.destroy()
+    except:
+        pass
+    try:
+        classement_frame_moyen.destroy()
+    except:
+        pass
+    try:
+        classement_frame_difficile.destroy()
+    except:
+        pass
     global menu_jouer,menu_quitter,menu_classement,menu_options
     menu_jouer=Button(window,image=img_menu_bouton_jouer,width=440,height=190,relief="flat",command=lambda:ecran_difficultes())
     menu_jouer.place(x=300,y=300)
@@ -197,9 +209,248 @@ def ecran_classement():
     menu_classement.destroy()
     menu_options.destroy()
     image_fond_label['image']=classement_fond
-    global classement_menu
+    global classement_menu,facile_menu,moyen_menu,difficile_menu
     classement_menu=Button(window,image=difficultes_bouton_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
     classement_menu.place(x=950,y=550)
+
+    facile_menu=Button(window,image=difficultes_bouton_facile,width=440,height=190,relief="flat",command=lambda:classement_difficulte("facile"))
+    facile_menu.place(x=300,y=300)
+
+    moyen_menu=Button(window,image=difficultes_bouton_moyen,width=440,height=190,relief="flat",command=lambda:classement_difficulte("moyen"))
+    moyen_menu.place(x=300,y=550)
+
+    difficile_menu=Button(window,image=difficultes_bouton_difficile,width=440,height=190,relief="flat",command=lambda:classement_difficulte("difficile"))
+    difficile_menu.place(x=950,y=300)
+
+def classement_difficulte(difficulte):
+    global classements_menu,classement_frame_facile,classement_frame_moyen,classement_frame_difficile
+    if difficulte =='facile':
+        facile_menu.destroy()
+        moyen_menu.destroy()
+        difficile_menu.destroy()
+
+        classement_menu.destroy()
+        classements_menu=Button(window,image=difficultes_bouton_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
+        classements_menu.place(x=600,y=550)
+
+        image_fond_label['image']=classement_fond
+
+        classement_frame_facile=Frame(window)
+        classement_frame_facile.pack(pady=130)
+
+        execution_facile=cursor.execute(""" 
+        SELECT nom,score,temps FROM FACILE ORDER BY score
+        """)
+        selection_facile=cursor.fetchall()
+        nom1_facile=selection_facile[0][0]
+        nom2_facile=selection_facile[1][0]
+        nom3_facile=selection_facile[2][0]
+        nom4_facile=selection_facile[3][0]
+        nom5_facile=selection_facile[4][0]
+
+        score1_facile=selection_facile[0][1]
+        score2_facile=selection_facile[2][1]
+        score3_facile=selection_facile[3][1]
+        score4_facile=selection_facile[4][1]
+        score5_facile=selection_facile[5][1]
+
+        temps1_facile=selection_facile[0][2]
+        temps2_facile=selection_facile[2][2]
+        temps3_facile=selection_facile[3][2]
+        temps4_facile=selection_facile[4][2]
+        temps5_facile=selection_facile[5][2]
+
+        tab_nom_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",bg="grey",text="nom")
+        tab_nom_facile.grid(row=0,column=0)
+        tab_score_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",bg="grey",text="score")
+        tab_score_facile.grid(row=0,column=1)
+        tab_temps_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",bg="grey",text="temps")
+        tab_temps_facile.grid(row=0,column=2)
+
+        tab_nom1_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=nom1_facile)
+        tab_nom1_facile.grid(row=1,column=0)
+        tab_nom2_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=nom2_facile)
+        tab_nom2_facile.grid(row=2,column=0)
+        tab_nom3_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=nom3_facile)
+        tab_nom3_facile.grid(row=3,column=0)
+        tab_nom4_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=nom4_facile)
+        tab_nom4_facile.grid(row=4,column=0)
+        tab_nom5_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=nom5_facile)
+        tab_nom5_facile.grid(row=5,column=0)
+
+        tab_score1_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=str(score1_facile))
+        tab_score1_facile.grid(row=1,column=1)
+        tab_score2_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=str(score2_facile))
+        tab_score2_facile.grid(row=2,column=1)
+        tab_score3_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=str(score3_facile))
+        tab_score3_facile.grid(row=3,column=1)
+        tab_score4_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=str(score4_facile))
+        tab_score4_facile.grid(row=4,column=1)
+        tab_score5_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=str(score5_facile))
+        tab_score5_facile.grid(row=5,column=1)
+
+        tab_temps1_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=temps1_facile)
+        tab_temps1_facile.grid(row=1,column=2)
+        tab_temps2_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=temps2_facile)
+        tab_temps2_facile.grid(row=2,column=2)
+        tab_temps3_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=temps3_facile)
+        tab_temps3_facile.grid(row=3,column=2)
+        tab_temps4_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=temps4_facile)
+        tab_temps4_facile.grid(row=4,column=2)
+        tab_temps5_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",text=temps5_facile)
+        tab_temps5_facile.grid(row=5,column=2)
+
+    elif difficulte=='moyen':
+        facile_menu.destroy()
+        moyen_menu.destroy()
+        difficile_menu.destroy()
+
+        classement_menu.destroy()
+        classements_menu=Button(window,image=difficultes_bouton_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
+        classements_menu.place(x=600,y=550)
+
+        image_fond_label['image']=classement_fond
+
+        classement_frame_moyen=Frame(window)
+        classement_frame_moyen.pack(pady=130)
+
+        execution_moyen=cursor.execute(""" 
+        SELECT nom,score,temps FROM MOYEN ORDER BY score
+        """)
+        selection_moyen=cursor.fetchall()
+        nom1_moyen=selection_moyen[0][0]
+        nom2_moyen=selection_moyen[1][0]
+        nom3_moyen=selection_moyen[2][0]
+        nom4_moyen=selection_moyen[3][0]
+        nom5_moyen=selection_moyen[4][0]
+
+        score1_moyen=selection_moyen[0][1]
+        score2_moyen=selection_moyen[2][1]
+        score3_moyen=selection_moyen[3][1]
+        score4_moyen=selection_moyen[4][1]
+        score5_moyen=selection_moyen[5][1]
+
+        temps1_moyen=selection_moyen[0][2]
+        temps2_moyen=selection_moyen[2][2]
+        temps3_moyen=selection_moyen[3][2]
+        temps4_moyen=selection_moyen[4][2]
+        temps5_moyen=selection_moyen[5][2]
+
+        tab_nom_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",bg="grey",text="nom")
+        tab_nom_moyen.grid(row=0,column=0)
+        tab_score_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",bg="grey",text="score")
+        tab_score_moyen.grid(row=0,column=1)
+        tab_temps_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",bg="grey",text="temps")
+        tab_temps_moyen.grid(row=0,column=2)
+
+        tab_nom1_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=nom1_moyen)
+        tab_nom1_moyen.grid(row=1,column=0)
+        tab_nom2_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=nom2_moyen)
+        tab_nom2_moyen.grid(row=2,column=0)
+        tab_nom3_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=nom3_moyen)
+        tab_nom3_moyen.grid(row=3,column=0)
+        tab_nom4_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=nom4_moyen)
+        tab_nom4_moyen.grid(row=4,column=0)
+        tab_nom5_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=nom5_moyen)
+        tab_nom5_moyen.grid(row=5,column=0)
+
+        tab_score1_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=str(score1_moyen))
+        tab_score1_moyen.grid(row=1,column=1)
+        tab_score2_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=str(score2_moyen))
+        tab_score2_moyen.grid(row=2,column=1)
+        tab_score3_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=str(score3_moyen))
+        tab_score3_moyen.grid(row=3,column=1)
+        tab_score4_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=str(score4_moyen))
+        tab_score4_moyen.grid(row=4,column=1)
+        tab_score5_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=str(score5_moyen))
+        tab_score5_moyen.grid(row=5,column=1)
+
+        tab_temps1_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=temps1_moyen)
+        tab_temps1_moyen.grid(row=1,column=2)
+        tab_temps2_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=temps2_moyen)
+        tab_temps2_moyen.grid(row=2,column=2)
+        tab_temps3_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=temps3_moyen)
+        tab_temps3_moyen.grid(row=3,column=2)
+        tab_temps4_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=temps4_moyen)
+        tab_temps4_moyen.grid(row=4,column=2)
+        tab_temps5_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",text=temps5_moyen)
+        tab_temps5_moyen.grid(row=5,column=2)
+
+    elif difficulte=='difficile':
+        facile_menu.destroy()
+        moyen_menu.destroy()
+        difficile_menu.destroy()
+        
+        classement_menu.destroy()
+        classements_menu=Button(window,image=difficultes_bouton_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
+        classements_menu.place(x=600,y=550)
+
+        image_fond_label['image']=classement_fond
+
+        classement_frame_difficile=Frame(window)
+        classement_frame_difficile.pack(pady=130)
+
+        execution_difficile=cursor.execute(""" 
+        SELECT nom,score,temps FROM DIFFICILE ORDER BY score
+        """)
+        selection_difficile=cursor.fetchall()
+        nom1_difficile=selection_difficile[0][0]
+        nom2_difficile=selection_difficile[1][0]
+        nom3_difficile=selection_difficile[2][0]
+        nom4_difficile=selection_difficile[3][0]
+        nom5_difficile=selection_difficile[4][0]
+
+        score1_difficile=selection_difficile[0][1]
+        score2_difficile=selection_difficile[2][1]
+        score3_difficile=selection_difficile[3][1]
+        score4_difficile=selection_difficile[4][1]
+        score5_difficile=selection_difficile[5][1]
+
+        temps1_difficile=selection_difficile[0][2]
+        temps2_difficile=selection_difficile[2][2]
+        temps3_difficile=selection_difficile[3][2]
+        temps4_difficile=selection_difficile[4][2]
+        temps5_difficile=selection_difficile[5][2]
+
+        tab_nom_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",bg="grey",text="nom")
+        tab_nom_difficile.grid(row=0,column=0)
+        tab_score_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",bg="grey",text="score")
+        tab_score_difficile.grid(row=0,column=1)
+        tab_temps_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",bg="grey",text="temps")
+        tab_temps_difficile.grid(row=0,column=2)
+
+        tab_nom1_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=nom1_difficile)
+        tab_nom1_difficile.grid(row=1,column=0)
+        tab_nom2_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=nom2_difficile)
+        tab_nom2_difficile.grid(row=2,column=0)
+        tab_nom3_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=nom3_difficile)
+        tab_nom3_difficile.grid(row=3,column=0)
+        tab_nom4_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=nom4_difficile)
+        tab_nom4_difficile.grid(row=4,column=0)
+        tab_nom5_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=nom5_difficile)
+        tab_nom5_difficile.grid(row=5,column=0)
+
+        tab_score1_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=str(score1_difficile))
+        tab_score1_difficile.grid(row=1,column=1)
+        tab_score2_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=str(score2_difficile))
+        tab_score2_difficile.grid(row=2,column=1)
+        tab_score3_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=str(score3_difficile))
+        tab_score3_difficile.grid(row=3,column=1)
+        tab_score4_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=str(score4_difficile))
+        tab_score4_difficile.grid(row=4,column=1)
+        tab_score5_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=str(score5_difficile))
+        tab_score5_difficile.grid(row=5,column=1)
+
+        tab_temps1_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=temps1_difficile)
+        tab_temps1_difficile.grid(row=1,column=2)
+        tab_temps2_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=temps2_difficile)
+        tab_temps2_difficile.grid(row=2,column=2)
+        tab_temps3_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=temps3_difficile)
+        tab_temps3_difficile.grid(row=3,column=2)
+        tab_temps4_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=temps4_difficile)
+        tab_temps4_difficile.grid(row=4,column=2)
+        tab_temps5_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",text=temps5_difficile)
+        tab_temps5_difficile.grid(row=5,column=2)        
 
 def ecran_difficultes():
     """ génère l'écran des difficultés """
@@ -419,17 +670,17 @@ def fin_du_jeu(etat):
         print("Perdu")
         image_fond_label['image']=ecran_defaite
         image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
-        d_abando=Button(window, text='Abandonner ?',image=dommage_quitter,width=440,height=190,relief="flat",command=lambda:window.destroy())
-        d_abando.place(x=850,y=300)
+        d_abando=Button(window,image=dommage_quitter,width=440,height=190,relief="flat",command=lambda:window.destroy())
+        d_abando.place(x=850,y=550)
         d_menu=Button(window,image=dommage_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
-        d_menu.place(x=850,y=550)
+        d_menu.place(x=300,y=550)
     else:
         suppr_tout()
         print('Bravo')
         image_fond_label['image']=ecran_victoire
         image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
         v_menu=Button(window,image=bravo_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
-        v_menu.place(x=850,y=300)
+        v_menu.place(x=300,y=550)
         v_sauver=Button(window,image=bravo_score,width=440,height=190,relief="flat",command=lambda:inserer_db_popup(int(score(chrono,vie)),temps_str(temps_chrono(chrono))))
         v_sauver.place(x=850,y=550)
 
@@ -536,6 +787,17 @@ def inserer_db_popup(score,temps):
 
 def inserer_db(nom,score,temps):
     """ permet d'insérer un score dans la db (sous la forme: id, nom, score, temps) """
+    try :
+        cursor.execute("""
+    CREATE TABLE IF NOT EXISTS FACILE (
+    id integer primary key autoincrement unique,
+    nom TEXT,
+    score INT,
+    temps TEXT)
+    """)
+    except :
+        pass
+
     cursor.execute("INSERT INTO FACILE (nom,score,temps) VALUES (?,?,?)",(nom,score,temps))
     db.commit()
     popup_nom.destroy()
@@ -576,31 +838,50 @@ window.bind("<Escape>", lambda event: window.attributes("-fullscreen", False))
 window.bind("<F4>",lambda event: window.destroy())
 
 # définition des images dans le code
+
+img_menu_fond_pilar=Image.open('menu_fond.png')
+img_menu_fond_pil=img_menu_fond_pilar.resize((window.winfo_screenwidth(),window.winfo_screenheight()))
+img_menu_fond=ImageTk.PhotoImage(img_menu_fond_pil)
+
 img_menu_bouton_jouer=PhotoImage(file="menu_bouton_jouer.png")
-img_menu_fond=PhotoImage(file='menu_fond.png')
 img_menu_bouton_quitter=PhotoImage(file="menu_bouton_quitter.png")
 img_menu_bouton_classement=PhotoImage(file="menu_bouton_classement.png")
 img_menu_bouton_options=PhotoImage(file="menu_bouton_options.png")
 
-img_options_fond=PhotoImage(file="options_fond.png")
+
+img_options_fond_pilar=Image.open("options_fond.png")
+img_options_fond_pil=img_options_fond_pilar.resize((window.winfo_screenwidth(),window.winfo_screenheight()))
+img_options_fond=ImageTk.PhotoImage(img_options_fond_pil)
+
 img_options_bouton_aide=PhotoImage(file="options_bouton_aide.png")
 img_options_bouton_fond=PhotoImage(file="options_bouton_fond.png")
 img_options_bouton_menu=PhotoImage(file="options_bouton_menu.png")
 img_options_bouton_musique=PhotoImage(file="options_bouton_musique.png")
 
-classement_fond=PhotoImage(file="classement_fond.png")
+classement_fond_pilar=Image.open("classement_fond.png")
+classement_fond_pil=classement_fond_pilar.resize((window.winfo_screenwidth(),window.winfo_screenheight()))
+classement_fond=ImageTk.PhotoImage(classement_fond_pil)
 
-difficultes_fond=PhotoImage(file="difficultes_fond.png")
+difficultes_fond_pilar=Image.open("difficultes_fond.png")
+difficultes_fond_pil=difficultes_fond_pilar.resize((window.winfo_screenwidth(),window.winfo_screenheight()))
+difficultes_fond=ImageTk.PhotoImage(difficultes_fond_pil)
+
 difficultes_bouton_facile=PhotoImage(file="difficultes_bouton_facile.png")
 difficultes_bouton_moyen=PhotoImage(file="difficultes_bouton_moyen.png")
 difficultes_bouton_difficile=PhotoImage(file="difficultes_bouton_difficile.png")
 difficultes_bouton_menu=PhotoImage(file="difficultes_bouton_menu.png")
 
-ecran_defaite=PhotoImage(file="dommage_fond.png")
+ecran_defaite_pilar=Image.open("dommage_fond.png")
+ecran_defaite_pil=ecran_defaite_pilar.resize((window.winfo_screenwidth(),window.winfo_screenheight()))
+ecran_defaite=ImageTk.PhotoImage(ecran_defaite_pil)
+
 dommage_menu=PhotoImage(file="dommage_bouton_menu.png")
 dommage_quitter=PhotoImage(file="dommage_bouton_quitter.png")
 
-ecran_victoire=PhotoImage(file="bravo_fond.png")
+ecran_victoire_pilar=Image.open("bravo_fond.png")
+ecran_victoire_pil=ecran_victoire_pilar.resize((window.winfo_screenwidth(),window.winfo_screenheight()))
+ecran_victoire=ImageTk.PhotoImage(ecran_victoire_pil)
+
 bravo_menu=PhotoImage(file="bravo_bouton_menu.png")
 bravo_score=PhotoImage(file="bravo_bouton_sauvegarder_score.png")
 
@@ -617,10 +898,21 @@ case6=PhotoImage(file="case6.png")
 case7=PhotoImage(file="case7.png")
 case8=PhotoImage(file="case8.png")
 
-fond1=PhotoImage(file="fond1.png")
-fond2=PhotoImage(file="fond2.png")
-fond3=PhotoImage(file="fond4.png")
-fond4=PhotoImage(file="fond4.png")
+fond1_pilar=Image.open("fond1.png")
+fond1_pil=fond1_pilar.resize((window.winfo_screenwidth(),window.winfo_screenheight()))
+fond1=ImageTk.PhotoImage(fond1_pil)
+
+fond2_pilar=Image.open("fond2.png")
+fond2_pil=fond2_pilar.resize((window.winfo_screenwidth(),window.winfo_screenheight()))
+fond2=ImageTk.PhotoImage(fond2_pil)
+
+fond3_pilar=Image.open("fond3.png")
+fond3_pil=fond3_pilar.resize((window.winfo_screenwidth(),window.winfo_screenheight()))
+fond3=ImageTk.PhotoImage(fond3_pil)
+
+fond4_pilar=Image.open("fond4.png")
+fond4_pil=fond4_pilar.resize((window.winfo_screenwidth(),window.winfo_screenheight()))
+fond4=ImageTk.PhotoImage(fond4_pil)
 
 logo=PhotoImage(file="logo_cyberdemineur.png")
 
