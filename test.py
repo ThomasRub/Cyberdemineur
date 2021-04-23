@@ -15,7 +15,11 @@ L'état de la case peut prendre 3 valeurs:
 """
 
 """ Notes pour plus tard:
-        - http://tkinter.fdex.eu/doc/uwm.html """
+        - http://tkinter.fdex.eu/doc/uwm.html 
+    A faire:
+        - bug des boutons qui ne disparaissent pas
+        - ajustement de la taille des img avec PIL
+        - affichage du classement"""
 
 from random import randint
 from tkinter import*
@@ -23,6 +27,7 @@ from time import time_ns,sleep
 from math import sqrt,exp
 from winsound import PlaySound,SND_ASYNC,SND_LOOP
 import sqlite3
+from PIL import *
 
 ########################################################################################################
 ######################################### CLASSES ######################################################
