@@ -50,6 +50,7 @@ class Grille:
                 self.grille_button[i][j].bind("<Button-1>",lambda i,x=i,y=j: self.click(x,y))
 
     def affiche_valeurs(self,ligne,colonne):
+        """ permet de savoir quelle valeur afficher quand on click sur une case """
         if self.grille[ligne][colonne][1]==0:
 
             if self.grille[ligne][colonne][0] == 0 :
@@ -138,6 +139,7 @@ class Grille:
 ########################################################################################################
 
 def ecran_titre():
+    """ génère l'écran du menu principal """
     try:
         image_fond_label['image']=img_menu_fond
         d_menu.destroy()
@@ -184,6 +186,7 @@ def ecran_titre():
     menu_options.place(x=950,y=550)
 
 def ecran_classement():
+    """ génère l'écran du classement """
     try:
         image_fond_label['image']=classement_fond
         menu_jouer.destroy()
@@ -197,6 +200,7 @@ def ecran_classement():
     classement_menu.place(x=950,y=550)
 
 def ecran_difficultes():
+    """ génère l'écran des difficultés """
     try:
         image_fond_label['image']=difficultes_fond
         menu_jouer.destroy()
@@ -219,6 +223,7 @@ def ecran_difficultes():
     difficulte_menu.place(x=950,y=550)
 
 def ecran_options():
+    """ génère l'écran des options """
     try:
         image_fond_label['image']=options_fond
         menu_jouer.destroy()
@@ -381,6 +386,7 @@ def debut_difficile():
     chrono=time_ns()
 
 def debut_de_partie():
+    """ génère le début de la partie et la grille """
     try:
         global image_fond_label
 
@@ -401,6 +407,7 @@ def debut_de_partie():
     gr.generer_boutons()
 
 def verif_fin(vie,bombes_trouvees):
+    """ vérifie si le jeu est fini (victoire ou défaite) """
     if vie==0:
         etat='defaite'
         fin_du_jeu(etat)
@@ -409,6 +416,7 @@ def verif_fin(vie,bombes_trouvees):
         fin_du_jeu(etat)
 
 def fin_du_jeu(etat):
+    """ crée les différents écrans de fin et tout ce qui doit se passer à la fin du jeu """
     global image_fond_label,ecrant,d_menu,d_abando,v_menu,v_sauver,chrono
     if etat=='defaite':
         suppr_tout()
@@ -434,6 +442,7 @@ def fin_du_jeu(etat):
         print(int(score(chrono,3)))
 
 def aide():
+    """ explique comment jouer quand on appuie sur le bouton aide dans les options """
     print("dévoilez les cases et trouvez lez bombes")
 
 def changer_fond():
@@ -469,6 +478,7 @@ def temps_chrono(temps):
     return temps_final
 
 def temps_str(temps):
+    """ cette fonction transforme l'affichage du temps (sous forme de tuple) en str sous la forme m:s:ms """
     temps=str(temps)
     temps=temps.replace("(","")
     temps=temps.replace(")","")
@@ -493,6 +503,7 @@ def changer_musique():
         son_joue=0
 
 def inserer_db_popup(score,temps):
+    """ crée une pop-up qui permet d'insérer un nom pour la db """
     global popup_nom
     popup_nom=Toplevel()
     popup_nom.title("Entrez un nom")
@@ -510,12 +521,14 @@ def inserer_db_popup(score,temps):
     bouton_valider.pack()
 
 def inserer_db(nom,score,temps):
+    """ permet d'insérer un score dans la db (sous la forme: id, nom, score, temps) """
     cursor.execute("INSERT INTO FACILE (nom,score,temps) VALUES (?,?,?)",(nom,score,temps))
     db.commit()
     popup_nom.destroy()
     print("données enregistrées")
 
 def suppr_tout():
+    """ permet de supprimer toute la grille """
     grille.destroy()
 
 ########################################################################################################
@@ -604,7 +617,7 @@ window.configure(bg="black")
 window.iconphoto(False,logo)
 window.title("Cyber démineur")
 
-fond_en_cours=fond1
+fond_en_cours=fond4
 
 ecran_titre()
 
