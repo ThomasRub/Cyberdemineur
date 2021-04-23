@@ -428,7 +428,7 @@ def fin_du_jeu(etat):
         print("Perdu")
         image_fond_label['image']=ecran_defaite
         image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
-        d_abando=Button(window, text='Abandonner ?',command=lambda:window.destroy())
+        d_abando=Button(window, text='Abandonner ?',image=dommage_quitter,width=440,height=190,relief="flat",command=lambda:window.destroy())
         d_abando.place(x=850,y=300)
         d_menu=Button(window,image=dommage_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
         d_menu.place(x=850,y=550)
@@ -607,6 +607,7 @@ difficultes_bouton_menu=PhotoImage(file="difficultes_bouton_menu.png")
 
 ecran_defaite=PhotoImage(file="dommage_fond.png")
 dommage_menu=PhotoImage(file="dommage_bouton_menu.png")
+dommage_quitter=PhotoImage(file="dommage_bouton_quitter.png")
 
 ecran_victoire=PhotoImage(file="bravo_fond.png")
 bravo_menu=PhotoImage(file="bravo_bouton_menu.png")
