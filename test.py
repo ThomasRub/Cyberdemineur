@@ -146,19 +146,16 @@ class Grille:
 def ecran_titre():
     """ génère l'écran du menu principal """
     try:
-        image_fond_label['image']=img_menu_fond
         d_menu.destroy()
         d_abando.destroy()
     except:
         pass
     try:
-        image_fond_label['image']=img_menu_fond
         v_menu.destroy()
         v_sauver.destroy()
     except:
         pass
     try:
-        image_fond_label['image']=img_menu_fond
         options_bouton_aide.destroy()
         options_bouton_fond.destroy()
         options_bouton_menu.destroy()
@@ -170,7 +167,6 @@ def ecran_titre():
     except:
         pass
     try:
-        image_fond_label['image']=img_menu_fond
         difficulte_facile.destroy()
         difficulte_moyen.destroy()
         difficulte_difficile.destroy()
@@ -178,7 +174,6 @@ def ecran_titre():
     except:
         pass
     try:
-        image_fond_label['image']=img_menu_fond
         classement_menu.destroy()
     except:
         pass
@@ -197,28 +192,22 @@ def ecran_titre():
 
 def ecran_classement():
     """ génère l'écran du classement """
-    try:
-        image_fond_label['image']=classement_fond
-        menu_jouer.destroy()
-        menu_quitter.destroy()
-        menu_classement.destroy()
-        menu_options.destroy()
-    except:
-        pass
+    menu_jouer.destroy()
+    menu_quitter.destroy()
+    menu_classement.destroy()
+    menu_options.destroy()
+    image_fond_label['image']=classement_fond
     global classement_menu
     classement_menu=Button(window,image=difficultes_bouton_menu,width=440,height=190,relief="flat",command=lambda:ecran_titre())
     classement_menu.place(x=950,y=550)
 
 def ecran_difficultes():
     """ génère l'écran des difficultés """
-    try:
-        image_fond_label['image']=difficultes_fond
-        menu_jouer.destroy()
-        menu_quitter.destroy()
-        menu_classement.destroy()
-        menu_options.destroy()
-    except:
-        pass
+    image_fond_label['image']=difficultes_fond
+    menu_jouer.destroy()
+    menu_quitter.destroy()
+    menu_classement.destroy()
+    menu_options.destroy()
     global difficulte_facile,difficulte_moyen,difficulte_difficile,difficulte_menu
     difficulte_facile=Button(window,image=difficultes_bouton_facile,width=440,height=190,relief="flat",command=lambda:debut_facile())
     difficulte_facile.place(x=300,y=300)
@@ -234,14 +223,11 @@ def ecran_difficultes():
 
 def ecran_options():
     """ génère l'écran des options """
-    try:
-        image_fond_label['image']=options_fond
-        menu_jouer.destroy()
-        menu_quitter.destroy()
-        menu_classement.destroy()
-        menu_options.destroy()
-    except:
-        pass
+    image_fond_label['image']=img_options_fond
+    menu_jouer.destroy()
+    menu_quitter.destroy()
+    menu_classement.destroy()
+    menu_options.destroy()
     global options_bouton_aide,options_bouton_fond,options_bouton_menu,options_bouton_musique
     options_bouton_aide=Button(window,image=img_options_bouton_aide,width=440,height=190,relief="flat",command=lambda:aide())
     options_bouton_aide.place(x=300,y=300)
@@ -453,7 +439,7 @@ def fin_du_jeu(etat):
 
 def aide():
     """ explique comment jouer quand on appuie sur le bouton aide dans les options """
-    print("dévoilez les cases et trouvez lez bombes")
+    print("dévoilez les cases et trouvez les bombes")
 
 def changer_fond():
     """ permet de changer de fond à partir du bouton associé dans les options """
