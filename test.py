@@ -89,7 +89,7 @@ class Grille:
         """Méthode qui dévoile la case si le bouton est cliqué (via le clic gauche). Elle efface le bouton,
         et modifie la case de la grille sous le bouton pour que la bonne valeur soit affichée.
         Elle prends aussi en charge de dévoiler les cases adjacentes à une case vide (diagonale non prise en charge)"""
-        
+
 
         while self.premier_clic==False and self.grille[ligne][colonne][0] != 0:
             self.grille=generer_grille(l,c,bombes)
@@ -239,7 +239,7 @@ def classement_difficulte(difficulte):
         classement_frame_facile.pack(pady=130)
 
         execution_facile=cursor.execute(""" 
-        SELECT nom,score,temps FROM FACILE ORDER BY score
+        SELECT nom,score,temps FROM FACILE ORDER BY score DESC
         """)
         selection_facile=cursor.fetchall()
         nom1_facile=selection_facile[0][0]
@@ -249,16 +249,16 @@ def classement_difficulte(difficulte):
         nom5_facile=selection_facile[4][0]
 
         score1_facile=selection_facile[0][1]
-        score2_facile=selection_facile[2][1]
-        score3_facile=selection_facile[3][1]
-        score4_facile=selection_facile[4][1]
-        score5_facile=selection_facile[5][1]
+        score2_facile=selection_facile[1][1]
+        score3_facile=selection_facile[2][1]
+        score4_facile=selection_facile[3][1]
+        score5_facile=selection_facile[4][1]
 
         temps1_facile=selection_facile[0][2]
-        temps2_facile=selection_facile[2][2]
-        temps3_facile=selection_facile[3][2]
-        temps4_facile=selection_facile[4][2]
-        temps5_facile=selection_facile[5][2]
+        temps2_facile=selection_facile[1][2]
+        temps3_facile=selection_facile[2][2]
+        temps4_facile=selection_facile[3][2]
+        temps5_facile=selection_facile[4][2]
 
         tab_nom_facile=Label(classement_frame_facile,width=60,height=4,relief="raised",bg="grey",text="nom")
         tab_nom_facile.grid(row=0,column=0)
@@ -315,7 +315,7 @@ def classement_difficulte(difficulte):
         classement_frame_moyen.pack(pady=130)
 
         execution_moyen=cursor.execute(""" 
-        SELECT nom,score,temps FROM MOYEN ORDER BY score
+        SELECT nom,score,temps FROM MOYEN ORDER BY score DESC
         """)
         selection_moyen=cursor.fetchall()
         nom1_moyen=selection_moyen[0][0]
@@ -325,16 +325,16 @@ def classement_difficulte(difficulte):
         nom5_moyen=selection_moyen[4][0]
 
         score1_moyen=selection_moyen[0][1]
-        score2_moyen=selection_moyen[2][1]
-        score3_moyen=selection_moyen[3][1]
-        score4_moyen=selection_moyen[4][1]
-        score5_moyen=selection_moyen[5][1]
+        score2_moyen=selection_moyen[1][1]
+        score3_moyen=selection_moyen[2][1]
+        score4_moyen=selection_moyen[3][1]
+        score5_moyen=selection_moyen[4][1]
 
         temps1_moyen=selection_moyen[0][2]
-        temps2_moyen=selection_moyen[2][2]
-        temps3_moyen=selection_moyen[3][2]
-        temps4_moyen=selection_moyen[4][2]
-        temps5_moyen=selection_moyen[5][2]
+        temps2_moyen=selection_moyen[1][2]
+        temps3_moyen=selection_moyen[2][2]
+        temps4_moyen=selection_moyen[3][2]
+        temps5_moyen=selection_moyen[4][2]
 
         tab_nom_moyen=Label(classement_frame_moyen,width=60,height=4,relief="raised",bg="grey",text="nom")
         tab_nom_moyen.grid(row=0,column=0)
@@ -391,7 +391,7 @@ def classement_difficulte(difficulte):
         classement_frame_difficile.pack(pady=130)
 
         execution_difficile=cursor.execute(""" 
-        SELECT nom,score,temps FROM DIFFICILE ORDER BY score
+        SELECT nom,score,temps FROM DIFFICILE ORDER BY score DESC
         """)
         selection_difficile=cursor.fetchall()
         nom1_difficile=selection_difficile[0][0]
@@ -401,16 +401,16 @@ def classement_difficulte(difficulte):
         nom5_difficile=selection_difficile[4][0]
 
         score1_difficile=selection_difficile[0][1]
-        score2_difficile=selection_difficile[2][1]
-        score3_difficile=selection_difficile[3][1]
-        score4_difficile=selection_difficile[4][1]
-        score5_difficile=selection_difficile[5][1]
+        score2_difficile=selection_difficile[1][1]
+        score3_difficile=selection_difficile[2][1]
+        score4_difficile=selection_difficile[3][1]
+        score5_difficile=selection_difficile[4][1]
 
         temps1_difficile=selection_difficile[0][2]
-        temps2_difficile=selection_difficile[2][2]
-        temps3_difficile=selection_difficile[3][2]
-        temps4_difficile=selection_difficile[4][2]
-        temps5_difficile=selection_difficile[5][2]
+        temps2_difficile=selection_difficile[1][2]
+        temps3_difficile=selection_difficile[2][2]
+        temps4_difficile=selection_difficile[3][2]
+        temps5_difficile=selection_difficile[4][2]
 
         tab_nom_difficile=Label(classement_frame_difficile,width=60,height=4,relief="raised",bg="grey",text="nom")
         tab_nom_difficile.grid(row=0,column=0)
