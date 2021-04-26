@@ -1,10 +1,11 @@
 # Cyberdemineur
 Démineur dans un style cyberpunk.  
-Ce projet a été créé dans le cadre d'un cours de NSI au lycée Louis Modeste Leroy.  
+Ce projet a été créé dans le cadre d'un cours de NSI au lycée Louis Modeste Leroy d'Evreux.  
   
 Si vous voulez télécharger le jeu:
 - vérifiez que vous êtes bien dans la branche "main"
 - appuyez sur le bouton "Code" et cliquez sur "Donload ZIP"
+- choisissez le dossier corespondant à la version que vous voulez lancer
 - lancez le fichier "Cyberdemineur.exe"
   
 Si vous voulez télécharger le code:  
