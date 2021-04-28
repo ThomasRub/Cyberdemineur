@@ -714,7 +714,7 @@ def verif_fin(vie,bombes_trouvees):
 
 def fin_du_jeu(etat):
     """ crée les différents écrans de fin et tout ce qui doit se passer à la fin du jeu """
-    global image_fond_label,ecrant,d_menu,d_abando,v_menu,v_sauver,chrono
+    global image_fond_label,ecrant,d_menu,d_abando,v_menu,v_sauver,chrono,score
     if etat=='defaite':
         suppr_tout()
         print("Perdu")
@@ -727,20 +727,51 @@ def fin_du_jeu(etat):
     else:
         suppr_tout()
         print('Bravo')
+        chrono=(time_ns()-chrono)
+        print(temps_str(temps_chrono(chrono)))
+        score=score(chrono,3)
+        score=int(score)
+        print(score)
+
         image_fond_label['image']=ecran_victoire
         image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
         v_menu=Button(window,image=bravo_menu,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
         v_menu.place(x=300*coeff_reduc,y=550*coeff_reduc)
-        v_sauver=Button(window,image=bravo_score,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:inserer_db_popup(int(score(chrono,vie)),temps_str(temps_chrono(chrono))))
+        v_sauver=Button(window,image=bravo_score,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:inserer_db_popup(score,temps_str(temps_chrono(chrono))))
         v_sauver.place(x=850*coeff_reduc,y=550*coeff_reduc)
-
-        chrono=(time_ns()-chrono)
-        print(temps_str(temps_chrono(chrono)))
-        print(int(score(chrono,3)))
 
 def aide():
     """ explique comment jouer quand on appuie sur le bouton aide dans les options """
-    print("dévoilez les cases et trouvez les bombes")
+    aide_popup=Toplevel()
+    aide_popup.title("Explication")
+    aide_popup.configure(bg='black',width=(window.winfo_screenwidth()/2),height=(window.winfo_screenheight()/2))
+    aide_popup.grab_set()
+
+    principe=Label(aide_popup,text="Le but du jeu est de trouver où sont les bombes.\n Vous pouvez pour cela placer des drapeaux",fg='#FF22FF',bg='black')
+    principe.grid(row=0,column=1)
+    controle=Label(aide_popup,text="Poser/enlever un drapeau = clic droit. \nOuvrir une case = clic gauche",fg='#22FFFF',bg='black')
+    controle.grid(row=0,column=3)
+
+    bouton_cachee=Button(aide_popup,image=case_cachee,bg='black')
+    bouton_cachee.grid(row=2,column=0)
+    txt_bouton_cachee=Label(aide_popup,text="<- Ceci est une case non dévoilée",bg='black',fg='#22FFB6')
+    txt_bouton_cachee.grid(row=2,column=1)
+
+    bouton_vide=Button(aide_popup,image=case_vide,bg='black')
+    bouton_vide.grid(row=3,column=0)
+    txt_bouton_vide=Label(aide_popup,text="<- Ceci est une case dévoilée et vide",bg='black',fg='#FFC722')
+    txt_bouton_vide.grid(row=3,column=1)
+
+    bouton_drapeau=Button(aide_popup,image=case_drapeau,bg='black')
+    bouton_drapeau.grid(row=2,column=2)
+    txt_bouton_drapeau=Label(aide_popup,text="<- Ceci est une case avec un drapeau",bg='black',fg='#FF229D')
+    txt_bouton_drapeau.grid(row=2,column=3)
+
+    bouton_chiffre=Button(aide_popup,image=case8,bg='black')
+    bouton_chiffre.grid(row=3,column=2)
+    txt_bouton_chiffre=Label(aide_popup,text="<- Ceci est une case dévoilée, et indique le \nnombre de bombe autour d'elle (ici, 8)",bg='black',fg='#22E0FF')
+    txt_bouton_chiffre.grid(row=3,column=3)
+
 
 def changer_fond():
     """ permet de changer de fond à partir du bouton associé dans les options """
@@ -827,12 +858,24 @@ def inserer_db_popup(score,temps):
     popup_nom.transient(window)
     popup_nom.grab_set()
 
+    temps_affiche=StringVar()
+    temps_afficher=Label(popup_nom,textvariable=temps_affiche, bg='black',fg='#0066FF',width=20)
+    temps_afficher.pack()
+    temps_affiche.set("Vous avez mis " + str(temps))
+
+    score_affiche=StringVar()
+    score_afficher=Label(popup_nom,textvariable=score_affiche, bg='black',fg='#FF00FF',width=20)
+    score_afficher.pack()
+    score_affiche.set("Votre score est de " + str(score))
+
+    bravo_afficher=Label(popup_nom,text="Bravo ! Entrez votre nom :",bg='black',fg="#FFCC33",width=20)
+    bravo_afficher.pack()
     nom=StringVar()
     champ_saisie=Entry(popup_nom,width=20,textvariable=nom)
     champ_saisie.pack(padx=5,pady=5)
     champ_saisie.focus()
 
-    bouton_valider=Button(popup_nom,text="Valider",command=lambda:inserer_db(nom.get(),score,temps))
+    bouton_valider=Button(popup_nom,text="Valider",command=lambda:inserer_db(nom.get(),score,temps),fg='#FF00FF')
     bouton_valider.pack()
 
 def inserer_db(nom,score,temps):
