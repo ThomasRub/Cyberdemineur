@@ -874,7 +874,6 @@ def aide():
     txt_bouton_chiffre=Label(aide_popup,text="<- Ceci est une case dévoilée, et indique le \nnombre de bombe autour d'elle (ici, 8)",bg='black',fg='#22E0FF')
     txt_bouton_chiffre.grid(row=3,column=3)
 
-
 def changer_fond():
     """ permet de changer de fond à partir du bouton associé dans les options """
     global fond_en_cours
