@@ -81,8 +81,9 @@ class Grille:
                 label_vies=Label(window,text=("vies:",vie),font=("TkDefaultFont",20),bg="#00008E",fg="#FF001E")
                 label_vies.place(x=10*coeff_reduc,y=10*coeff_reduc)
 
-                global bombes_trouvees
+                global bombes_trouvees,bombes_posees
                 bombes_trouvees+=1
+                bombes_posees+=1
             try :
                 self.grille_label[ligne][colonne]['image']=self.image_label
                 self.grille_button[ligne][colonne].grid_remove()
@@ -120,7 +121,7 @@ class Grille:
         else:
             self.affiche_valeurs(ligne,colonne)
         
-        verif_fin(vie,bombes_trouvees)
+        verif_fin(vie,bombes_trouvees,bombes_posees)
 
     def afficheFlag(self,ligne,colonne):
         """Méthode qui modifie l'image du bouton pour afficher un drapeau. Le joueur ne peut ainsi plus dévoiler
@@ -130,15 +131,24 @@ class Grille:
             self.grille[ligne][colonne][1]=2
             self.grille_button[ligne][colonne]['image']=case_drapeau
             if self.grille[ligne][colonne][0]==9:
-                global bombes_trouvees
+                global bombes_trouvees,bombes_posees
                 bombes_trouvees+=1
-                verif_fin(vie,bombes_trouvees)
+                bombes_posees+=1
+                verif_fin(vie,bombes_trouvees,bombes_posees)
+            else:
+                bombes_posees+=1
+                verif_fin(vie,bombes_trouvees,bombes_posees)
+
         elif self.grille[ligne][colonne][1]==2:
             self.grille[ligne][colonne][1]=0
             self.grille_button[ligne][colonne]['image']=case_cachee
             if self.grille[ligne][colonne][0]==9:
                 bombes_trouvees-=1
-                return bombes_trouvees
+                bombes_posees-=1
+                return bombes_trouvees,bombes_posees
+            else:
+                bombes_posees-=1
+                verif_fin(vie,bombes_trouvees,bombes_posees)
 
 ########################################################################################################
 ######################################### FONCTIONS ####################################################
@@ -171,6 +181,10 @@ def ecran_titre():
         options_bouton_fond.destroy()
         options_bouton_menu.destroy()
         options_bouton_musique.destroy()
+    except:
+        pass
+    try:
+        preview_fond_label.destroy()
     except:
         pass
     try:
@@ -719,7 +733,7 @@ def debut_facile():
         difficulte_difficile.destroy()
     except:
         pass
-    global l,c,bombes,vie,premier_clic,nbmax,casehaut,casebas,bombes_trouvees,chrono   #Toutes ces variables sont utilisés au sein du code
+    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees,bombes_posees,chrono   #Toutes ces variables sont utilisés au sein du code
     l=9
     c=9
     bombes=10
@@ -734,6 +748,7 @@ def debut_facile():
         casebas.append(((i+1)*c)-1)
     casebas.append(c*l)
     bombes_trouvees=0
+    bombes_posees=0
     
     debut_de_partie()
     chrono=time_ns()
@@ -748,7 +763,7 @@ def debut_normal():
         difficulte_difficile.destroy()
     except:
         pass
-    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees,chrono   #Toutes ces variables sont utilisés au sein du code
+    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees,bombes_posees,chrono   #Toutes ces variables sont utilisés au sein du code
     l=12
     c=12
     bombes=25
@@ -763,6 +778,7 @@ def debut_normal():
         casebas.append(((i+1)*c)-1)
     casebas.append(c*l)
     bombes_trouvees=0
+    bombes_posees=0
     
     debut_de_partie()
     chrono=time_ns()
@@ -777,7 +793,7 @@ def debut_difficile():
         difficulte_difficile.destroy()
     except:
         pass
-    global l,c,bombes,vie,premier_clic,nbmax,casehaut,casebas,bombes_trouvees,chrono   #Toutes ces variables sont utilisés au sein du code
+    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees,bombes_posees,chrono   #Toutes ces variables sont utilisés au sein du code
     l=12
     c=24
     bombes=80
@@ -825,18 +841,18 @@ def debut_de_partie():
     label_vies=Label(window,text=("vies:",vie),font=("TkDefaultFont",20),bg="#00008E",fg="#FF001E")
     label_vies.place(x=10*coeff_reduc,y=10*coeff_reduc)
 
-def verif_fin(vie,bombes_trouvees):
+def verif_fin(vie,bombes_trouvees,bombes_posees):
     """ vérifie si le jeu est fini (victoire ou défaite) """
     if vie==0:
         etat='defaite'
         fin_du_jeu(etat)
-    if bombes_trouvees==bombes:
+    if bombes_trouvees==bombes and bombes_posees==bombes:
         etat='victoire'
         fin_du_jeu(etat)
 
 def fin_du_jeu(etat):
     """ crée les différents écrans de fin et tout ce qui doit se passer à la fin du jeu """
-    global image_fond_label,ecrant,d_menu,d_abando,v_menu,v_sauver,chrono,score
+    global image_fond_label,d_menu,d_abando,v_menu,v_sauver,chrono,score
     if etat=='defaite':
         try:
             suppr_tout()
@@ -861,7 +877,7 @@ def fin_du_jeu(etat):
         print('Bravo')
         chrono=(time_ns()-chrono)
         print(temps_str(temps_chrono(chrono)))
-        score=score(chrono,3)
+        score=scores(chrono,3)
         score=int(score)
         print(score)
 
@@ -875,7 +891,7 @@ def fin_du_jeu(etat):
 def aide():
     """ crée une pop-up qui explique comment jouer quand on appuie sur le bouton aide dans les options """
     aide_popup=Toplevel()
-    aide_popup.title("Explication")
+    aide_popup.title("Explications")
     aide_popup.configure(bg='black',width=(window.winfo_screenwidth()/2),height=(window.winfo_screenheight()/2))
     aide_popup.iconphoto(False,logo)
     aide_popup.transient(window)
@@ -917,15 +933,27 @@ def aide():
 
 def changer_fond():
     """ permet de changer de fond à partir du bouton associé dans les options """
-    global fond_en_cours
+    global fond_en_cours,preview_fond_label
+    try:
+        preview_fond_label.destroy()
+    except:
+        pass
     if fond_en_cours==fond1:
         fond_en_cours=fond2
+        preview_fond_label=Label(window,image=preview_fond2,width=400*coeff_reduc,height=225*coeff_reduc, bg='black')
+        preview_fond_label.place(x=20*coeff_reduc,y=20*coeff_reduc)
     elif fond_en_cours==fond2:
         fond_en_cours=fond3
+        preview_fond_label=Label(window,image=preview_fond3,width=400*coeff_reduc,height=225*coeff_reduc, bg='black')
+        preview_fond_label.place(x=20*coeff_reduc,y=20*coeff_reduc)
     elif fond_en_cours==fond3:
         fond_en_cours=fond4
+        preview_fond_label=Label(window,image=preview_fond4,width=400*coeff_reduc,height=225*coeff_reduc, bg='black')
+        preview_fond_label.place(x=20*coeff_reduc,y=20*coeff_reduc)
     elif fond_en_cours==fond4:
         fond_en_cours=fond1
+        preview_fond_label=Label(window,image=preview_fond1,width=400*coeff_reduc,height=225*coeff_reduc, bg='black')
+        preview_fond_label.place(x=20*coeff_reduc,y=20*coeff_reduc)
 
 def temps_chrono(temps):
     """retourne le temps passé en nano-secondes sous la forme d'un tuple (minutes,secondes,milli-secondes)"""
@@ -956,7 +984,7 @@ def temps_str(temps):
     temps=temps.replace(",",":")
     return temps
 
-def score(chrono,nb_vies):
+def scores(chrono,nb_vies):
     """cette fonction génère un score en fonction du temps et du nomber de vies perdus"""
     score=(1/sqrt(chrono/10))*exp(2*nb_vies+5)*10**5
     return score
@@ -1008,7 +1036,7 @@ def inserer_db_popup(score,temps):
     vies_affiche=StringVar()
     vies_afficher=Label(popup_nom,textvariable=vies_affiche, bg='black',fg='#FF001E',width=20)
     vies_afficher.pack()
-    vies_affiche.set("Il vous reste " + str(vie) + " vies")
+    vies_affiche.set("Il vous restait " + str(vie) + " vies")
 
     score_affiche=StringVar()
     score_afficher=Label(popup_nom,textvariable=score_affiche, bg='black',fg='#FF00FF',width=20)
@@ -1256,6 +1284,24 @@ fond4=ImageTk.PhotoImage(fond4_pil)
 
 logo=PhotoImage(file="logo_cyberdemineur.png")
 
+## Image de preview
+taille_preview1=round((window.winfo_screenwidth()//4)*coeff_reduc)
+taille_preview2=round((window.winfo_screenheight()//4)*coeff_reduc)
+preview_fond_pilar=Image.open('fond1.png')
+preview_fond_pil=preview_fond_pilar.resize((taille_preview1,taille_preview2))
+preview_fond1=ImageTk.PhotoImage(preview_fond_pil)
+
+preview_fond_pilar=Image.open('fond2.png')
+preview_fond_pil=preview_fond_pilar.resize((taille_preview1,taille_preview2))
+preview_fond2=ImageTk.PhotoImage(preview_fond_pil)
+
+preview_fond_pilar=Image.open('fond3.png')
+preview_fond_pil=preview_fond_pilar.resize((taille_preview1,taille_preview2))
+preview_fond3=ImageTk.PhotoImage(preview_fond_pil)
+
+preview_fond_pilar=Image.open('fond4.png')
+preview_fond_pil=preview_fond_pilar.resize((taille_preview1,taille_preview2))
+preview_fond4=ImageTk.PhotoImage(preview_fond_pil)
 # définition de l'image de fond
 image_fond_label=Label(window, image=img_menu_fond)
 image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
@@ -1265,6 +1311,7 @@ window.iconphoto(False,logo)
 window.title("Cyber démineur")
 
 fond_en_cours=fond4
+
 
 ecran_titre()
 
