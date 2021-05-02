@@ -74,8 +74,13 @@ class Grille:
                 self.image_label=case8
             elif self.grille[ligne][colonne][0]==9 :
                 self.image_label=case_bombe
-                global vie
+
+                global vie,label_vies
                 vie-=1
+                label_vies.destroy()
+                label_vies=Label(window,text=("vies:",vie),font=("TkDefaultFont",20),bg="#00008E",fg="#FF001E")
+                label_vies.place(x=10*coeff_reduc,y=10*coeff_reduc)
+
                 global bombes_trouvees
                 bombes_trouvees+=1
             try :
@@ -142,6 +147,12 @@ class Grille:
 def ecran_titre():
     """ génère l'écran du menu principal """
     try:
+        suppr_tout()
+        jeu_bouton_menu.destroy()
+        label_vies.destroy()
+    except:
+        pass
+    try:
         classements_menu.destroy()
     except:
         pass
@@ -206,7 +217,7 @@ def ecran_titre():
     menu_options.place(x=950*coeff_reduc,y=550*coeff_reduc)
 
 def ecran_classement():
-    """ génère l'écran du classement """
+    """ génère l'écran du classement pour choisir les difficultées """
     menu_jouer.destroy()
     menu_quitter.destroy()
     menu_classement.destroy()
@@ -226,6 +237,7 @@ def ecran_classement():
     difficile_menu.place(x=950*coeff_reduc,y=300*coeff_reduc)
 
 def classement_difficulte(difficulte):
+    """ génère l'écran et le tableau de classement choisit avec la fonction ecran_classement """
     global classements_menu,classement_frame_facile,classement_frame_moyen,classement_frame_difficile
     if difficulte =='facile':
         try:
@@ -785,7 +797,7 @@ def debut_difficile():
     chrono=time_ns()
 
 def debut_de_partie():
-    """ génère le début de la partie et la grille """
+    """ génère l'écran du début de la partie et la grille(graphiquement) """
     try:
         global image_fond_label
 
@@ -805,6 +817,14 @@ def debut_de_partie():
     gr=Grille(grille_console,taille,taille+4)
     gr.generer_boutons()
 
+    global jeu_bouton_menu
+    jeu_bouton_menu=Button(window,image=img_jeu_bouton_menu,width=190,height=80,relief="flat",command=lambda:ecran_titre())
+    jeu_bouton_menu.place(x=10*coeff_reduc,y=800*coeff_reduc)
+
+    global label_vies
+    label_vies=Label(window,text=("vies:",vie),font=("TkDefaultFont",20),bg="#00008E",fg="#FF001E")
+    label_vies.place(x=10*coeff_reduc,y=10*coeff_reduc)
+
 def verif_fin(vie,bombes_trouvees):
     """ vérifie si le jeu est fini (victoire ou défaite) """
     if vie==0:
@@ -818,7 +838,12 @@ def fin_du_jeu(etat):
     """ crée les différents écrans de fin et tout ce qui doit se passer à la fin du jeu """
     global image_fond_label,ecrant,d_menu,d_abando,v_menu,v_sauver,chrono,score
     if etat=='defaite':
-        suppr_tout()
+        try:
+            suppr_tout()
+            jeu_bouton_menu.destroy()
+            label_vies.destroy()
+        except:
+            pass
         print("Perdu")
         image_fond_label['image']=ecran_defaite
         image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
@@ -827,7 +852,12 @@ def fin_du_jeu(etat):
         d_menu=Button(window,image=dommage_menu,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
         d_menu.place(x=300*coeff_reduc,y=550*coeff_reduc)
     else:
-        suppr_tout()
+        try:
+            suppr_tout()
+            jeu_bouton_menu.destroy()
+            label_vies.destroy()
+        except:
+            pass
         print('Bravo')
         chrono=(time_ns()-chrono)
         print(temps_str(temps_chrono(chrono)))
@@ -843,10 +873,12 @@ def fin_du_jeu(etat):
         v_sauver.place(x=850*coeff_reduc,y=550*coeff_reduc)
 
 def aide():
-    """ explique comment jouer quand on appuie sur le bouton aide dans les options """
+    """ crée une pop-up qui explique comment jouer quand on appuie sur le bouton aide dans les options """
     aide_popup=Toplevel()
     aide_popup.title("Explication")
     aide_popup.configure(bg='black',width=(window.winfo_screenwidth()/2),height=(window.winfo_screenheight()/2))
+    aide_popup.iconphoto(False,logo)
+    aide_popup.transient(window)
     aide_popup.grab_set()
 
     principe=Label(aide_popup,text="Le but du jeu est de trouver où sont les bombes.\n Vous pouvez pour cela placer des drapeaux",fg='#FF22FF',bg='black')
@@ -873,6 +905,15 @@ def aide():
     bouton_chiffre.grid(row=3,column=2)
     txt_bouton_chiffre=Label(aide_popup,text="<- Ceci est une case dévoilée, et indique le \nnombre de bombe autour d'elle (ici, 8)",bg='black',fg='#22E0FF')
     txt_bouton_chiffre.grid(row=3,column=3)
+
+    txt_vies=Label(aide_popup,text="Attention vous avez 3 vies que vous pouvez perdre",bg='black',fg='#FF001E')
+    txt_vies.grid(row=4,column=1)
+
+    bouton_bombe=Button(aide_popup,image=case_bombe,bg='black')
+    bouton_bombe.grid(row=4,column=2)
+
+    txt_vies2=Label(aide_popup,text="<- en tombant sur des bombes",bg='black',fg='#FF001E')
+    txt_vies2.grid(row=4,column=3)
 
 def changer_fond():
     """ permet de changer de fond à partir du bouton associé dans les options """
@@ -964,6 +1005,11 @@ def inserer_db_popup(score,temps):
     temps_afficher.pack()
     temps_affiche.set("Vous avez mis " + str(temps))
 
+    vies_affiche=StringVar()
+    vies_afficher=Label(popup_nom,textvariable=vies_affiche, bg='black',fg='#FF001E',width=20)
+    vies_afficher.pack()
+    vies_affiche.set("Il vous reste " + str(vie) + " vies")
+
     score_affiche=StringVar()
     score_afficher=Label(popup_nom,textvariable=score_affiche, bg='black',fg='#FF00FF',width=20)
     score_afficher.pack()
@@ -980,7 +1026,7 @@ def inserer_db_popup(score,temps):
     bouton_valider.pack()
 
 def inserer_db(nom,score,temps):
-    """ permet d'insérer un score dans la db (sous la forme: nom, score, temps) """
+    """ permet d'insérer un score dans la db (sous la forme: id, nom, score, temps) """
     try :
         cursor.execute("""
     CREATE TABLE IF NOT EXISTS FACILE (
@@ -1187,6 +1233,9 @@ case8_pilar=Image.open("case8.png")
 case8_pil=case8_pilar.resize(( taille_image,taille_image ))
 case8=ImageTk.PhotoImage(case8_pil)
 
+img_jeu_bouton_menu_pilar=Image.open('options_bouton_menu.png')
+img_jeu_bouton_menu_pil=img_jeu_bouton_menu_pilar.resize((200,90))
+img_jeu_bouton_menu=ImageTk.PhotoImage(img_jeu_bouton_menu_pil)
 
 ##Fonds + logo
 fond1_pilar=Image.open("fond1.png")
@@ -1225,10 +1274,8 @@ changer_musique()
 window.bind("<F12>",lambda event:changer_musique())
 
 
-
-
-
 window.mainloop()
+
 
 # fermeture de la db
 cursor.close()
