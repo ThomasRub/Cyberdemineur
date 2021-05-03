@@ -178,6 +178,7 @@ def ecran_titre():
         options_bouton_fond.destroy()
         options_bouton_menu.destroy()
         options_bouton_musique.destroy()
+        options_mute.destroy()
     except:
         pass
     try:
@@ -215,16 +216,16 @@ def ecran_titre():
     except:
         pass
     global menu_jouer,menu_quitter,menu_classement,menu_options
-    menu_jouer=Button(window,image=img_menu_bouton_jouer,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_difficultes())
+    menu_jouer=Button(window,image=img_menu_bouton_jouer,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_difficultes())
     menu_jouer.place(x=300*coeff_reduc,y=300*coeff_reduc)
 
-    menu_quitter=Button(window,image=img_menu_bouton_quitter,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:window.destroy())
+    menu_quitter=Button(window,image=img_menu_bouton_quitter,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:window.destroy())
     menu_quitter.place(x=300*coeff_reduc,y=550*coeff_reduc)
 
-    menu_classement=Button(window,image=img_menu_bouton_classement,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_classement())
+    menu_classement=Button(window,image=img_menu_bouton_classement,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_classement())
     menu_classement.place(x=950*coeff_reduc,y=300*coeff_reduc)
 
-    menu_options=Button(window,image=img_menu_bouton_options,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_options())
+    menu_options=Button(window,image=img_menu_bouton_options,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_options())
     menu_options.place(x=950*coeff_reduc,y=550*coeff_reduc)
 
 def ecran_classement():
@@ -235,16 +236,16 @@ def ecran_classement():
     menu_options.destroy()
     image_fond_label['image']=classement_fond
     global classement_menu,facile_menu,moyen_menu,difficile_menu
-    classement_menu=Button(window,image=difficultes_bouton_menu,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
+    classement_menu=Button(window,image=difficultes_bouton_menu,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
     classement_menu.place(x=950*coeff_reduc,y=550*coeff_reduc)
 
-    facile_menu=Button(window,image=difficultes_bouton_facile,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:classement_difficulte("facile"))
+    facile_menu=Button(window,image=difficultes_bouton_facile,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:classement_difficulte("facile"))
     facile_menu.place(x=300*coeff_reduc,y=300*coeff_reduc)
 
-    moyen_menu=Button(window,image=difficultes_bouton_moyen,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:classement_difficulte("moyen"))
+    moyen_menu=Button(window,image=difficultes_bouton_moyen,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:classement_difficulte("moyen"))
     moyen_menu.place(x=300*coeff_reduc,y=550*coeff_reduc)
 
-    difficile_menu=Button(window,image=difficultes_bouton_difficile,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:classement_difficulte("difficile"))
+    difficile_menu=Button(window,image=difficultes_bouton_difficile,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:classement_difficulte("difficile"))
     difficile_menu.place(x=950*coeff_reduc,y=300*coeff_reduc)
 
 def classement_difficulte(difficulte):
@@ -256,7 +257,7 @@ def classement_difficulte(difficulte):
         difficile_menu.destroy()
 
         classement_menu.destroy()
-        classements_menu=Button(window,image=difficultes_bouton_menu,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
+        classements_menu=Button(window,image=difficultes_bouton_menu,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
         classements_menu.place(x=600*coeff_reduc,y=550*coeff_reduc)
 
         image_fond_label['image']=classement_fond
@@ -379,7 +380,7 @@ def classement_difficulte(difficulte):
         difficile_menu.destroy()
 
         classement_menu.destroy()
-        classements_menu=Button(window,image=difficultes_bouton_menu,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
+        classements_menu=Button(window,image=difficultes_bouton_menu,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
         classements_menu.place(x=600*coeff_reduc,y=550*coeff_reduc)
 
         image_fond_label['image']=classement_fond
@@ -502,7 +503,7 @@ def classement_difficulte(difficulte):
         difficile_menu.destroy()
         
         classement_menu.destroy()
-        classements_menu=Button(window,image=difficultes_bouton_menu,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
+        classements_menu=Button(window,image=difficultes_bouton_menu,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
         classements_menu.place(x=600*coeff_reduc,y=550*coeff_reduc)
 
         image_fond_label['image']=classement_fond
@@ -627,16 +628,16 @@ def ecran_difficultes():
     menu_classement.destroy()
     menu_options.destroy()
     global difficulte_facile,difficulte_moyen,difficulte_difficile,difficulte_menu
-    difficulte_facile=Button(window,image=difficultes_bouton_facile,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:debut_facile())
+    difficulte_facile=Button(window,image=difficultes_bouton_facile,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:debut_facile())
     difficulte_facile.place(x=300*coeff_reduc,y=300*coeff_reduc)
 
-    difficulte_moyen=Button(window,image=difficultes_bouton_moyen,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:debut_normal())
+    difficulte_moyen=Button(window,image=difficultes_bouton_moyen,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:debut_normal())
     difficulte_moyen.place(x=300*coeff_reduc,y=550*coeff_reduc)
 
-    difficulte_difficile=Button(window,image=difficultes_bouton_difficile,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:debut_difficile())
+    difficulte_difficile=Button(window,image=difficultes_bouton_difficile,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:debut_difficile())
     difficulte_difficile.place(x=950*coeff_reduc,y=300*coeff_reduc)
 
-    difficulte_menu=Button(window,image=difficultes_bouton_menu,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
+    difficulte_menu=Button(window,image=difficultes_bouton_menu,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
     difficulte_menu.place(x=950*coeff_reduc,y=550*coeff_reduc)
 
 def ecran_options():
@@ -646,21 +647,24 @@ def ecran_options():
     menu_quitter.destroy()
     menu_classement.destroy()
     menu_options.destroy()
-    global options_bouton_aide,options_bouton_fond,options_bouton_menu,options_bouton_musique,preview_fond_label
-    options_bouton_aide=Button(window,image=img_options_bouton_aide,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:aide())
+    global options_bouton_aide,options_bouton_fond,options_bouton_menu,options_bouton_musique,preview_fond_label,options_mute
+    options_bouton_aide=Button(window,image=img_options_bouton_aide,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:aide())
     options_bouton_aide.place(x=300*coeff_reduc,y=300*coeff_reduc)
 
-    options_bouton_fond=Button(window,image=img_options_bouton_fond,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:changer_fond())
+    options_bouton_fond=Button(window,image=img_options_bouton_fond,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:changer_fond())
     options_bouton_fond.place(x=300*coeff_reduc,y=550*coeff_reduc)
 
-    preview_fond_label=Label(window,image=preview_fond4,width=335*coeff_reduc,height=185*coeff_reduc, bg='black')
+    preview_fond_label=Label(window,image=preview_fond4,bd=0,width=335*coeff_reduc,height=185*coeff_reduc, bg='black')
     preview_fond_label.place(x=20*coeff_reduc,y=20*coeff_reduc)
 
-    options_bouton_menu=Button(window,image=img_options_bouton_menu,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
+    options_bouton_menu=Button(window,image=img_options_bouton_menu,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
     options_bouton_menu.place(x=950*coeff_reduc,y=550*coeff_reduc)
 
-    options_bouton_musique=Button(window,image=img_options_bouton_musique,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:changer_musique())
+    options_bouton_musique=Button(window,image=img_options_bouton_musique,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:changer_musique())
     options_bouton_musique.place(x=950*coeff_reduc,y=300*coeff_reduc)
+
+    options_mute=Checkbutton(window,text="mute",bg="#222222",fg="#E645FF",selectcolor="#222222",font=("TkDefaultFont",15),bd=0,command=lambda:mute())
+    options_mute.place(x=1400*coeff_reduc,y=450*coeff_reduc)
 
 def affiche_grille_console(grille):
     """Permet d'afficher la grille dans la console
@@ -826,7 +830,7 @@ def debut_de_partie():
     gr.generer_boutons()
 
     global jeu_bouton_menu
-    jeu_bouton_menu=Button(window,image=img_jeu_bouton_menu,width=190,height=80,relief="flat",command=lambda:ecran_titre())
+    jeu_bouton_menu=Button(window,image=img_jeu_bouton_menu,bd=0,width=190,height=80,relief="flat",command=lambda:ecran_titre())
     jeu_bouton_menu.place(x=10*coeff_reduc,y=800*coeff_reduc)
 
     global label_vies
@@ -855,9 +859,9 @@ def fin_du_jeu(etat):
         print("Perdu")
         image_fond_label['image']=ecran_defaite
         image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
-        d_abando=Button(window,image=dommage_quitter,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:window.destroy())
+        d_abando=Button(window,image=dommage_quitter,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:window.destroy())
         d_abando.place(x=850*coeff_reduc,y=550*coeff_reduc)
-        d_menu=Button(window,image=dommage_menu,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
+        d_menu=Button(window,image=dommage_menu,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
         d_menu.place(x=300*coeff_reduc,y=550*coeff_reduc)
     else:
         try:
@@ -875,9 +879,9 @@ def fin_du_jeu(etat):
 
         image_fond_label['image']=ecran_victoire
         image_fond_label.place(x=0,y=0,relwidth=1,relheight=1)
-        v_menu=Button(window,image=bravo_menu,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
+        v_menu=Button(window,image=bravo_menu,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:ecran_titre())
         v_menu.place(x=300*coeff_reduc,y=550*coeff_reduc)
-        v_sauver=Button(window,image=bravo_score,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:inserer_db_popup(score,temps_str(temps_chrono(chrono))))
+        v_sauver=Button(window,image=bravo_score,bd=0,width=400*coeff_reduc,height=180*coeff_reduc,relief="flat",command=lambda:inserer_db_popup(score,temps_str(temps_chrono(chrono))))
         v_sauver.place(x=850*coeff_reduc,y=550*coeff_reduc)
 
 def aide():
@@ -894,22 +898,22 @@ def aide():
     controle=Label(aide_popup,text="Poser/enlever un drapeau = clic droit. \nOuvrir une case = clic gauche",fg='#22FFFF',bg='black')
     controle.grid(row=0,column=3)
 
-    bouton_cachee=Button(aide_popup,image=case_cachee,bg='black',relief="flat")
+    bouton_cachee=Button(aide_popup,image=case_cachee,bd=0,bg='black',relief="flat")
     bouton_cachee.grid(row=2,column=0)
     txt_bouton_cachee=Label(aide_popup,text="<- Ceci est une case non dévoilée",bg='black',fg='#22FFB6')
     txt_bouton_cachee.grid(row=2,column=1)
 
-    bouton_vide=Button(aide_popup,image=case_vide,bg='black',relief="flat")
+    bouton_vide=Button(aide_popup,image=case_vide,bd=0,bg='black',relief="flat")
     bouton_vide.grid(row=3,column=0)
     txt_bouton_vide=Label(aide_popup,text="<- Ceci est une case dévoilée et vide",bg='black',fg='#FFC722')
     txt_bouton_vide.grid(row=3,column=1)
 
-    bouton_drapeau=Button(aide_popup,image=case_drapeau,bg='black',relief="flat")
+    bouton_drapeau=Button(aide_popup,image=case_drapeau,bd=0,bg='black',relief="flat")
     bouton_drapeau.grid(row=2,column=2)
     txt_bouton_drapeau=Label(aide_popup,text="<- Ceci est une case avec un drapeau",bg='black',fg='#FF229D')
     txt_bouton_drapeau.grid(row=2,column=3)
 
-    bouton_chiffre=Button(aide_popup,image=case8,bg='black',relief="flat")
+    bouton_chiffre=Button(aide_popup,image=case8,bd=0,bg='black',relief="flat")
     bouton_chiffre.grid(row=3,column=2)
     txt_bouton_chiffre=Label(aide_popup,text="<- Ceci est une case dévoilée, et indique le \nnombre de bombe autour d'elle (ici, 8)",bg='black',fg='#22E0FF')
     txt_bouton_chiffre.grid(row=3,column=3)
@@ -917,7 +921,7 @@ def aide():
     txt_vies=Label(aide_popup,text="Attention vous avez 3 vies que vous pouvez perdre",bg='black',fg='#FF001E')
     txt_vies.grid(row=4,column=1)
 
-    bouton_bombe=Button(aide_popup,image=case_bombe,bg='black',relief="flat")
+    bouton_bombe=Button(aide_popup,image=case_bombe,bd=0,bg='black',relief="flat")
     bouton_bombe.grid(row=4,column=2)
 
     txt_vies2=Label(aide_popup,text="<- en tombant sur des bombes",bg='black',fg='#FF001E')
@@ -1010,6 +1014,15 @@ def changer_musique():
         son_joue=6
         print("son = mainloop6")
 
+def mute():
+    global etat_mute
+    if etat_mute==False:
+        PlaySound("sound_mute.wav",SND_ASYNC|SND_LOOP)
+        etat_mute=True
+    else:
+        changer_musique()
+        etat_mute=False
+
 def inserer_db_popup(score,temps):
     """ crée une pop-up qui permet d'insérer un nom pour la db """
     global popup_nom
@@ -1042,7 +1055,7 @@ def inserer_db_popup(score,temps):
     champ_saisie.pack(padx=5,pady=5)
     champ_saisie.focus()
 
-    bouton_valider=Button(popup_nom,text="Valider",command=lambda:inserer_db(nom.get(),score,temps),fg='#FF00FF')
+    bouton_valider=Button(popup_nom,text="Valider",bd=0,command=lambda:inserer_db(nom.get(),score,temps),fg='#FF00FF')
     bouton_valider.pack()
 
 def inserer_db(nom,score,temps):
@@ -1311,6 +1324,7 @@ ecran_titre()
 son_joue=1
 changer_musique()
 window.bind("<F12>",lambda event:changer_musique())
+etat_mute=False
 
 
 window.mainloop()
