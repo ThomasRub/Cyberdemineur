@@ -729,7 +729,8 @@ def debut_facile():
         difficulte_difficile.destroy()
     except:
         pass
-    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees,bombes_posees,chrono   #Toutes ces variables sont utilisés au sein du code
+    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees,bombes_posees,chrono,difficulte_actuelle   #Toutes ces variables sont utilisés au sein du code
+    difficulte_actuelle=1
     l=9
     c=9
     bombes=10
@@ -759,7 +760,8 @@ def debut_normal():
         difficulte_difficile.destroy()
     except:
         pass
-    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees,bombes_posees,chrono   #Toutes ces variables sont utilisés au sein du code
+    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees,bombes_posees,chrono,difficulte_actuelle   #Toutes ces variables sont utilisés au sein du code
+    difficulte_actuelle=2
     l=12
     c=12
     bombes=25
@@ -789,7 +791,8 @@ def debut_difficile():
         difficulte_difficile.destroy()
     except:
         pass
-    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees,bombes_posees,chrono   #Toutes ces variables sont utilisés au sein du code
+    global l,c,bombes,vie,nbmax,casehaut,casebas,bombes_trouvees,bombes_posees,chrono,difficulte_actuelle   #Toutes ces variables sont utilisés au sein du code
+    difficulte_actuelle=3
     l=12
     c=24
     bombes=80
@@ -1060,20 +1063,54 @@ def inserer_db_popup(score,temps):
 
 def inserer_db(nom,score,temps):
     """ permet d'insérer un score dans la db (sous la forme: id, nom, score, temps) """
-    try :
-        cursor.execute("""
-    CREATE TABLE IF NOT EXISTS FACILE (
-    id integer primary key autoincrement unique,
-    nom TEXT,
-    score INT,
-    temps TEXT)
-    """)
-    except :
-        pass
+    if difficulte_actuelle==1:
+        try :
+            cursor.execute("""
+        CREATE TABLE IF NOT EXISTS FACILE (
+        id integer primary key autoincrement unique,
+        nom TEXT,
+        score INT,
+        temps TEXT)
+        """)
+        except :
+            pass
 
-    cursor.execute("INSERT INTO FACILE (nom,score,temps) VALUES (?,?,?)",(nom,score,temps))
-    db.commit()
-    popup_nom.destroy()
+        cursor.execute("INSERT INTO FACILE (nom,score,temps) VALUES (?,?,?)",(nom,score,temps))
+        db.commit()
+        popup_nom.destroy()
+
+    elif difficulte_actuelle==2:
+        try :
+            cursor.execute("""
+        CREATE TABLE IF NOT EXISTS MOYEN (
+        id integer primary key autoincrement unique,
+        nom TEXT,
+        score INT,
+        temps TEXT)
+        """)
+        except :
+            pass
+
+        cursor.execute("INSERT INTO MOYEN (nom,score,temps) VALUES (?,?,?)",(nom,score,temps))
+        db.commit()
+        popup_nom.destroy()
+
+    if difficulte_actuelle==3:
+        try :
+            cursor.execute("""
+        CREATE TABLE IF NOT EXISTS DIFFICILE (
+        id integer primary key autoincrement unique,
+        nom TEXT,
+        score INT,
+        temps TEXT)
+        """)
+        except :
+            pass
+
+        cursor.execute("INSERT INTO DIFFICILE (nom,score,temps) VALUES (?,?,?)",(nom,score,temps))
+        db.commit()
+        popup_nom.destroy()
+        
     print("données enregistrées")
 
 def suppr_tout():
@@ -1083,6 +1120,8 @@ def suppr_tout():
 ########################################################################################################
 ######################################### PROGRAMME PRINCIPAL ##########################################
 ########################################################################################################
+
+difficulte_actuelle=0
 
 # ouverture de la db
 db=sqlite3.connect("classement.db")
