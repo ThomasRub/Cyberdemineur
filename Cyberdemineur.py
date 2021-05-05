@@ -75,7 +75,7 @@ class Grille:
                 global vie,label_vies
                 vie-=1
                 label_vies.destroy()
-                label_vies=Label(window,text=("vies:",vie),font=("TkDefaultFont",20),bg="#00008E",fg="#FF001E")
+                label_vies=Label(window,text=("vies:",vie),font=("TkDefaultFont",20),bg="black",fg="#FF001E")
                 label_vies.place(x=10*coeff_reduc,y=10*coeff_reduc)
 
                 global bombes_trouvees,bombes_posees
@@ -1361,7 +1361,7 @@ fond_en_cours=fond4
 ecran_titre()
 
 # lecture des musiques
-son_joue=1
+son_joue=3
 changer_musique()
 window.bind("<F12>",lambda event:changer_musique())
 etat_mute=False
