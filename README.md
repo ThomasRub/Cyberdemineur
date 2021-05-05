@@ -4,7 +4,8 @@ Ce projet a été créé dans le cadre d'un cours de NSI au lycée Louis Modeste
   
 Si vous voulez télécharger le jeu:
 - clickez sur "release" à droite
-- clickez sur download zip  
+- clickez sur download zip
+- dans les dossiers clickez sur Cyberdemineur.exe  
 ou
 - vérifiez que vous êtes bien dans la branche "main"
 - appuyez sur le bouton "Code" et cliquez sur "Donload ZIP"
